@@ -1,0 +1,36 @@
+- road:
+  color: [0, 0, 255]
+  weight: 2
+  exclusive: True
+- vegetation:
+  color: [0, 255, 0]
+  weight: 1.5
+  exclusive: False
+- building:
+  color: [255, 0, 0]
+  weight: 1.5 
+  exclusive: False
+- grass/sidewalk:
+  color: [0, 100, 0]
+  weight: 0.5
+  exclusive: True
+- vehicle:
+  color: [0, 255, 255]
+  remap: road
+  exclusive: False
+- human:
+  color: [255, 0, 255]
+  remap: none
+  exclusive: False
+- gravel:
+  color: [0, 100, 100]
+  weight: 1.5
+  exclusive: True
+- tree_trunk:
+  color: [100, 50, 50]
+  remap: none
+  exclusive: False
+- light_pole:
+  color: [255, 100, 0]
+  remap: none
+  exclusive: False
