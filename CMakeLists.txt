@@ -109,7 +109,7 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES semantics_manager
   CATKIN_DEPENDS roscpp 
-  DEPENDS system_lib Eigen3 OpenCV
+  DEPENDS system_lib OpenCV yaml-cpp
 )
 
 ###########
@@ -155,6 +155,7 @@ target_link_libraries(${PROJECT_NAME}
   Eigen3::Eigen
   opencv_core
   opencv_imgproc
+  yaml-cpp
   ${catkin_LIBRARIES}
 )
 
