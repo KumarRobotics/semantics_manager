@@ -1,5 +1,5 @@
 #include <yaml-cpp/yaml.h>
-#include "spomp/semantic_color_lut.h"
+#include "semantics_manager/semantic_color_lut.h"
 
 SemanticColorLut::SemanticColorLut(const std::string& lut_path) {
   if (lut_path != NO_SEM) {
