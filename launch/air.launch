@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <arg name="world_config_path" default="$(find semantics_manager)/config/config.yaml"/>
+
+  <arg name="output" default="screen"/>
+
+  <arg name="decompress" default="False"/>
+  <arg name="orbslam" default="True"/>
+  <arg name="use_semantics" default="True"/>
+  <arg name="sim" default="False"/>
+  <arg name="air_router" default="True"/>
+  <arg name="db" default="True"/>
+
+  <group if="$(arg decompress)">
+    <node pkg="image_transport" type="republish" name="republish_ovc" output="screen" args="compressed in:=/ovc/rgb/image_color raw out:=/ovc/rgb/image_color"/>
+  </group>
+
+  <include file="$(find orbslam3_ros)/launch/orbslam3_ros.launch" if="$(arg orbslam)" pass_all_args="True"/>
+
+  <include file="$(find erfnet_pytorch_ros)/launch/erfnet_ros.launch" if="$(arg use_semantics)" pass_all_args="True"/>
+
+  <include file="$(find asoom)/launch/asoom.launch" pass_all_args="True">
+    <arg name="ros_pub_period_ms" value="10000"/>
+
+    <arg name="map_req_point_density" value="50"/>
+    <arg name="keyframe_dist_thresh_m" value="4"/>
+  </include>
+
+  <node name="map_compressor" pkg="grid_map_comp" type="compressor_node" output="$(arg output)">
+    <param name="~map_topic_name" value="/asoom/map"/>
+    <param name="~layer_config" value="$(find semantics_manager)/config/map_compressed_layers.yaml"/>
+  </node>
+
+  <group if="$(arg air_router)">
+    <include file="$(find air_router)/launch/titan.launch" pass_all_args="True">
+      <!-- Always publish air_router output -->
+      <arg name="initial_expl_time" value="180"/>
+      <arg name="after_search_time" value="20"/>
+      <arg name="tracking_time" value="45"/>
+      <arg name="output" value="screen"/>
+    </include>
+  </group>
+  <group if="$(arg db)">
+    <include file="$(find comm_stack_launch)/launch/titan.launch" pass_all_args="True">
+      <arg name="robot_name" value="titan" />
+    </include>
+  </group>
+</launch>

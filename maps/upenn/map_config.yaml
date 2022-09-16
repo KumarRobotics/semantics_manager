@@ -1,0 +1,6 @@
+dynamic: False
+svg: upenn.svg
+raster: upenn.png
+color: upenn_color.png
+viz: upenn_viz.png
+resolution: 2.438

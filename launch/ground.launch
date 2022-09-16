@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <arg name="world_config_path" default="$(find semantics_manager)/config/config.yaml"/>
+  <arg name="robot_list" default="io,europa,callisto"/>
+  <arg name="this_robot" default="io"/>
+  <arg name="aerial_map_ns" default="titan"/>
+
+  <arg name="output" default="screen"/>
+  <arg name="sim" default="False"/>
+  <arg name="rofl" default="True"/>
+  <arg name="global" default="True"/>
+  <arg name="goal_manager" default="True"/>
+  <arg name="find_obj" default="True"/>
+  <arg name="ddb" default="True"/>
+  <arg name="object_mapper" default="True"/>
+
+  <include file="$(find rofl)/launch/rofl_odom.launch" if="$(arg rofl)"/>
+
+  <include file="$(find spomp)/launch/local.launch" pass_all_args="True">
+    <arg name="TP_target_dist_xy" value="0.5"/>
+    <arg name="TP_noise_m" value="0.05"/>
+    <arg name="TP_slope_thresh" value="0.3"/>
+    <arg name="TP_inflation_m" value="0.5"/>
+
+    <arg name="PP_max_spacing_m" value="0.5"/>
+
+    <arg name="goal_topic" value="/move_base_simple/goal" if="$(eval not arg('global'))"/>
+  </include>
+
+  <group if="$(arg global)">
+    <node pkg="grid_map_comp" type="decompressor_node" name="aerial_map_decompressor" output="$(arg output)">
+      <param name="~map_topic_name" value="/$(arg aerial_map_ns)/asoom/map"/>
+    </node>
+
+    <include file="$(find top_down_render)/launch/top_down_render.launch" pass_all_args="True">
+      <arg name="init_param_path" value="$(find semantics_manager)/maps/dynamic_new_bolton/init_conditions.yaml"/>
+      <!--arg name="output" value="log"/-->
+
+      <arg name="filter_pos_cov" value="0.007"/>
+      <arg name="filter_theta_cov" value="0.007"/>
+      <arg name="filter_regularization" value="0.2"/>
+
+      <arg name="map_pub_resolution" value="1"/>
+    </include>
+
+    <include file="$(find spomp)/launch/mapper.launch" pass_all_args="True">
+      <arg name="viz_thread_period_ms" value="10000"/>
+      <arg name="M_pgo_thread_period_ms" value="10000"/>
+
+      <arg name="PG_num_frames_opt" value="10"/>
+      <arg name="PG_between_uncertainty_loc" value="0.02"/>
+      <arg name="PG_between_uncertainty_rot" value="0.02"/>
+    </include>
+
+    <node pkg="grid_map_comp" type="compressor_node" name="ground_map_compressor" output="$(arg output)">
+      <param name="~map_topic_name" value="/spomp_mapper/map"/>
+      <param name="~layer_config" value="$(find semantics_manager)/config/map_compressed_layers.yaml"/>
+    </node>
+
+    <include file="$(find spomp)/launch/global.launch" pass_all_args="True">
+      <arg name="G_timeout_duration_s_per_m" value="2"/>
+
+      <arg name="TM_learn_trav" value="True"/>
+      <arg name="TM_no_max_terrain_in_graph" value="True"/>
+      <arg name="TM_max_hole_fill_size_m" value="1"/>
+      <arg name="TM_min_region_size_m" value="0.5"/>
+      <arg name="TM_unvis_start_thresh" value="0"/>
+
+      <arg name="TG_reach_node_max_dist_m" value="5"/>
+      <arg name="TG_trav_window_rad" value="0.3"/>
+
+      <arg name="AM_max_frac_unknown" default="0.7"/>
+    </include>
+
+    <group if="$(arg goal_manager)">
+      <include file="$(find spomp)/launch/goal_manager.launch" pass_all_args="True">
+        <arg name="goal_manager_min_goal_dist_m" value="15"/>
+
+        <arg name="find_obj_merge_dist_m" value="15"/>
+        <arg name="find_obj_min_size_m" value="8"/>
+      </include>
+    </group>
+  </group>
+
+  <group if="$(arg ddb)">
+    <remap from="/basestation/target_goals" to="/find_object_goal_gen/target_goals"/>
+    <include file="$(find comm_stack_launch)/launch/jackal.launch" pass_all_args="True">
+      <arg name="robot_name" value="$(arg this_robot)"/>
+    </include>
+  </group>
+
+  <group if="$(arg object_mapper)">
+    <include file="$(find dcist_target_distance)/launch/target_distance_jackal.launch" pass_all_args="True">
+      <arg name="output" value="log"/>
+    </include>
+  </group>
+</launch>

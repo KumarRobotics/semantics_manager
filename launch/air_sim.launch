@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <arg name="world_config_path" default="$(find semantics_manager)/config/config_sim.yaml"/>
+  <arg name="ns" default="quadrotor"/>
+  <arg name="output" default="screen"/>
+
+  <arg name="robot_list" default="husky1,husky2,husky3,husky4,husky5,husky6,husky7,husky8,husky9,husky10"/>
+  <arg name="global" default="True"/>
+  <arg name="sim" default="True"/>
+  <arg name="air_router" default="True"/>
+
+  <include file="$(find fake_quad_waypt)/launch/fake_quad_waypt.launch">
+    <arg name="robot" value="$(arg ns)"/>
+    <arg name="path_file" value="None"/>
+  </include>
+
+  <group ns="$(arg ns)">
+    <include file="$(find asoom)/launch/asoom.launch" pass_all_args="True">
+      <arg name="output" value="log"/>
+
+      <arg name="ros_pub_period_ms" value="10000"/>
+      <arg name="pose_topic" value="/unity_ros/quadrotor/TrueState/pose"/>
+      <arg name="img_topic" value="RGBCamera_Down/image_raw"/>
+      <arg name="sem_topic" value="SemanticCamera/image_raw"/>
+
+      <arg name="pose_graph_fix_scale" value="True"/>
+
+      <arg name="rectifier_scale" value="1"/>
+      <arg name="rectifier_calib_path" value="$(find asoom)/config/sim.yaml"/>
+
+      <arg name="map_req_point_density" value="20"/>
+    </include>
+
+    <group if="$(arg air_router)">
+      <include file="$(find air_router)/launch/titan.launch" pass_all_args="True">
+        <arg name="initial_expl_time" value="100"/>
+        <arg name="short_expl_time" value="40"/>
+        <arg name="after_search_time" value="5" />
+        <arg name="tracking_time" value="30" />
+        <arg name="recent_pose_time_threshold" value="30"/>
+      </include>
+    </group>
+  </group>
+</launch>
