@@ -2,30 +2,37 @@
   color: [0, 0, 255]
   weight: 2
   exclusive: True
+  trav_difficulty: 0
 - vegetation:
   color: [0, 255, 0]
   weight: 1.5
   exclusive: False
+  trav_difficulty: 4
 - building:
   color: [255, 0, 0]
   weight: 1.5 
   exclusive: False
+  trav_difficulty: 5
 - grass/sidewalk:
   color: [0, 100, 0]
   weight: 0.5
   exclusive: True
+  trav_difficulty: 2
 - vehicle:
   color: [0, 255, 255]
   remap: road
   exclusive: False
+  trav_difficulty: 3
 - human:
   color: [255, 0, 255]
   remap: none
   exclusive: False
+  trav_difficulty: 3
 - gravel:
   color: [0, 100, 100]
   weight: 1.5
   exclusive: True
+  trav_difficulty: 1
 - tree_trunk:
   color: [100, 50, 50]
   remap: none
