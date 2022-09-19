@@ -4,7 +4,8 @@
 SemanticColorLut::SemanticColorLut(const std::string& lut_path) {
   if (lut_path != NO_SEM) {
     const YAML::Node lut = YAML::LoadFile(lut_path);
-    for (const auto& color : lut) {
+    for (const auto& class_type : lut) {
+      auto color = class_type["color"];
       if (color.size() != 3) {
         throw invalid_lut_file_exception();
       }
