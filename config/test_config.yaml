@@ -1,2 +1,2 @@
-classes: test_classes.yaml
+classes: ../classes/test_classes.yaml
 map: ../maps/test_map.yaml

@@ -1,2 +1,2 @@
-classes: classes.yaml
+classes: ../classes/classes.yaml
 map: ../maps/pennovation2.yaml
