@@ -1,4 +1,4 @@
-sem_map_svg: pennovation2/pennovation2.svg
-sem_map: pennovation2/pennovation2.png
-viz_map: pennovation2/pennovation2_viz.png
+svg: pennovation2/pennovation2.svg
+raster: pennovation2/pennovation2.png
+viz: pennovation2/pennovation2_viz.png
 resolution: 5.07

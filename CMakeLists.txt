@@ -126,6 +126,7 @@ include_directories(
 # Declare a C++ library
 add_library(${PROJECT_NAME}
   src/semantic_color_lut.cpp
+  src/semantics_manager.cpp
 )
 
 # Add cmake target dependencies of the library
