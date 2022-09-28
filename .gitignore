@@ -4,3 +4,4 @@
 *.json
 *.jpg
 .idea
+*raster_cache
