@@ -83,6 +83,8 @@ MapConfig::MapConfig(const std::string& map_config_path) {
     }
     if (map_config_file["viz"]) {
       viz_path = parent_path / path(map_config_file["viz"].as<std::string>());
+    } else if (raster_path != "") {
+      viz_path = raster_path;
     }
   }
 }
