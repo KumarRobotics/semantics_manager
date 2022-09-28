@@ -5,8 +5,8 @@
 
 namespace semantics_manager {
 
-static std::string getMapPath(const std::string& config_path);
-static std::string getClassesPath(const std::string& config_path);
+std::string getMapPath(const std::string& config_path);
+std::string getClassesPath(const std::string& config_path);
 
 struct ClassConfig {
   int num_classes;
