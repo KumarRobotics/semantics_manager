@@ -10,9 +10,9 @@ SemanticColorLut::SemanticColorLut(const std::string& lut_path) {
         throw invalid_lut_file_exception();
       }
 
-      uint32_t rgb_packed = packColor(color[0].as<uint32_t>(),
+      uint32_t rgb_packed = packColor(color[2].as<uint32_t>(),
                                       color[1].as<uint32_t>(),
-                                      color[2].as<uint32_t>());
+                                      color[0].as<uint32_t>());
 
       color_to_ind_.insert({rgb_packed, ind_to_color_.size()});
       ind_to_color_.push_back(rgb_packed);

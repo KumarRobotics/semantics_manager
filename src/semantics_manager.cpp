@@ -42,22 +42,16 @@ ClassConfig::ClassConfig(const std::string& class_config_path) {
     traversabililty_diff.resize(num_classes);
     loc_weight.resize(num_classes);
 
-    // First pass to build class lookup dict
-    std::map<std::string, int> class_name_map;
-    int flattened_class_ind = 0;
-    for (const auto& map_class : class_config_file) {
-      // Classes not remapped are the ones we are going to end up with
-      if (!map_class["remap"]) {
-        class_name_map.emplace(map_class["name"].as<std::string>(), flattened_class_ind);
-        ++flattened_class_ind;
-      }
+    class_to_flattened.resize(num_classes);
+    flattened_to_class.resize(num_classes);
+    // Init to all -1
+    for (auto& cls : flattened_to_class) {
+      cls = -1;
     }
 
-    class_to_flattened.resize(num_classes);
-    flattened_to_class.resize(flattened_class_ind);
-
+    // First pass to build class lookup dict
+    int num_flattened_classes = 0;
     int map_class_ind = 0;
-    flattened_class_ind = 0;
     for (const auto& map_class : class_config_file) {
       exclusivity[map_class_ind] = map_class["exclusive"].as<bool>();
       traversabililty_diff[map_class_ind] = map_class["traversability_diff"].as<int>();    
@@ -67,20 +61,18 @@ ClassConfig::ClassConfig(const std::string& class_config_path) {
         loc_weight[map_class_ind] = 0;
       }
 
-      // Manage loading the remappings
-      if (map_class["remap"]) {
-        // remap stuff
-        auto remap_class = class_name_map.find(map_class["remap"].as<std::string>());
-        if (remap_class != class_name_map.end()) {
-          class_to_flattened[map_class_ind] = remap_class->second;
-        }
-      } else {
-        class_to_flattened[map_class_ind] = flattened_class_ind;
-        flattened_to_class[flattened_class_ind] = map_class_ind;
-        ++flattened_class_ind;
+      int flattened_class = map_class["localization_class"].as<int>();
+      class_to_flattened[map_class_ind] = flattened_class;
+      if (flattened_class >= 0 && flattened_to_class[flattened_class] < 0) {
+        // Only allow setting once
+        flattened_to_class[flattened_class] = map_class_ind;
+      }
+      if (flattened_class >= num_flattened_classes) {
+        num_flattened_classes = flattened_class + 1;
       }
       ++map_class_ind;
     }
+    flattened_to_class.resize(num_flattened_classes);
 
     color_lut = SemanticColorLut(class_config_path);
   } catch (const YAML::BadFile& ex) {
