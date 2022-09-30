@@ -20,7 +20,7 @@ SemanticColorLut::SemanticColorLut(const std::string& lut_path) {
   }
 }
 
-void SemanticColorLut::ind2Color(const cv::Mat& ind_mat, cv::Mat& color_mat) {
+void SemanticColorLut::ind2Color(const cv::Mat& ind_mat, cv::Mat& color_mat) const {
   cv::cvtColor(ind_mat, color_mat, cv::COLOR_GRAY2BGR);
 
   using Pixel = cv::Point3_<uint8_t>;
@@ -32,7 +32,7 @@ void SemanticColorLut::ind2Color(const cv::Mat& ind_mat, cv::Mat& color_mat) {
   });
 }
 
-void SemanticColorLut::color2Ind(const cv::Mat& color_mat, cv::Mat& ind_mat) {
+void SemanticColorLut::color2Ind(const cv::Mat& color_mat, cv::Mat& ind_mat) const {
   cv::Mat color_mat_deep = color_mat.clone();
 
   using Pixel = cv::Point3_<uint8_t>;

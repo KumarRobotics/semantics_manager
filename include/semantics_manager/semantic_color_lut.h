@@ -34,16 +34,16 @@ class SemanticColorLut {
               static_cast<uint8_t>((color >> 16) & 0x0000ff)};
     }
   
-    inline uint32_t ind2Color(uint8_t ind) {
+    inline uint32_t ind2Color(uint8_t ind) const {
       uint32_t color = 0;
       if (ind < ind_to_color_.size() && ind >= 0) {
         color = ind_to_color_[ind];
       }
       return color;
     }
-    void ind2Color(const cv::Mat& ind_mat, cv::Mat& color_mat);
+    void ind2Color(const cv::Mat& ind_mat, cv::Mat& color_mat) const;
 
-    inline uint8_t color2Ind(uint32_t color) {
+    inline uint8_t color2Ind(uint32_t color) const {
       uint8_t ind = 255;
       auto color_ptr = color_to_ind_.find(color);
       if (color_ptr != color_to_ind_.end()) {
@@ -51,7 +51,7 @@ class SemanticColorLut {
       }
       return ind;
     }
-    void color2Ind(const cv::Mat& color_mat, cv::Mat& ind_mat);
+    void color2Ind(const cv::Mat& color_mat, cv::Mat& ind_mat) const;
 
   private:
     // Internally represent colors as packed 32 bit values
