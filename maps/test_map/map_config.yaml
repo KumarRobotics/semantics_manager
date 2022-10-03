@@ -1,0 +1,4 @@
+dynamic: False
+raster: test_map.png
+viz: test_map.png
+resolution: 1.014

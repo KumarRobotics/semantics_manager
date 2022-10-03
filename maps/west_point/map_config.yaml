@@ -1,0 +1,5 @@
+dynamic: False
+svg: west_point.svg
+raster: west_point.png
+viz: west_point_viz.png
+resolution: 2.946

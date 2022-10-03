@@ -1,0 +1,5 @@
+dynamic: False
+svg: grace_quarters.svg
+raster: grace_quarters.png
+viz: grace_quarters_viz.png
+resolution: 3.06
