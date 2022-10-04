@@ -12,6 +12,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  roslib
 )
 
 ## System dependencies are found with CMake's conventions
@@ -108,7 +109,7 @@ find_package(OpenCV REQUIRED COMPONENTS core imgproc)
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES semantics_manager
-  CATKIN_DEPENDS roscpp 
+  CATKIN_DEPENDS roscpp roslib
   DEPENDS system_lib OpenCV yaml-cpp
 )
 
@@ -200,10 +201,14 @@ target_link_libraries(${PROJECT_NAME}
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_semantics_manager.cpp)
-# if(TARGET ${PROJECT_NAME}-test)
-#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
-# endif()
-
+catkin_add_gtest(${PROJECT_NAME}-test 
+  test/test.cpp
+)
+if(TARGET ${PROJECT_NAME}-test)
+  target_link_libraries(${PROJECT_NAME}-test 
+    ${PROJECT_NAME} 
+    ${catkin_LIBRARIES}
+  )
+endif()
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
