@@ -2,7 +2,7 @@
 #include <ros/package.h>
 #include "semantics_manager/semantic_color_lut.h"
 
-TEST(ASOOM_utils, test_sem_color_lut) {
+TEST(semantics_manager, test_sem_color_lut) {
   SemanticColorLut lut(ros::package::getPath("semantics_manager") + "/classes/test_classes.yaml");  
   // Some unknown class
   auto color = SemanticColorLut::unpackColor(lut.ind2Color(34));
