@@ -26,6 +26,8 @@ struct MapConfig {
   std::string raster_path{""};
   std::string viz_path{""};
   float resolution;
+  bool have_fixed_origin;
+  Eigen::Vector2d fixed_origin_gps; // lat, long 
 
   MapConfig(const std::string& map_config_path);
 };

@@ -103,6 +103,15 @@ MapConfig::MapConfig(const std::string& map_config_path) {
         viz_path = raster_path;
       }
     }
+
+    if (map_config_file["gps_origin_lat"] && map_config_file["gps_origin_long"]) {
+      have_fixed_origin = true;
+      fixed_origin_gps = {map_config_file["gps_origin_lat"].as<double>(),
+                          map_config_file["gps_origin_long"].as<double>()};
+    } else {
+      have_fixed_origin = false;
+      fixed_origin_gps.setZero();
+    }
   } catch (const YAML::BadFile& ex) {
     throw std::invalid_argument("Could not find map config");
   } catch (const YAML::Exception& ex) {
