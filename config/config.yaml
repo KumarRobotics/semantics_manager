@@ -1,2 +1,2 @@
 classes: ../classes/classes.yaml
-map: ../maps/dynamic_map_pennov.yaml
+map: ../maps/dynamic_pennov/map_config.yaml

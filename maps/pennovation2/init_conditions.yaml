@@ -1,5 +1,7 @@
 svg_origin_x: 0
 svg_origin_y: 0
+init_pos_m_x: none
+init_pos_m_y: none
 init_pos_px_x: 1050
 init_pos_px_y: 920
 init_pos_px_cov: 20
