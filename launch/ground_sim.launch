@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <arg name="world_config_path" default="$(find semantics_manager)/config/config.yaml"/>
+  <arg name="output" default="screen"/>
+  <arg name="llol" default="True"/>
+  <arg name="ns" default="husky1"/>
+
+  <group ns="$(arg ns)">
+    <include file="$(find llol)/launch/llol.launch" if="$(arg llol)">
+      <arg name="motion_comp" value="False"/>
+      <arg name="body_frame" value="$(arg ns)/base"/>
+      <arg name="pano_frame" value="$(arg ns)/pano"/>
+      <arg name="odom_frame" value="$(arg ns)/odom"/>
+    </include>
+
+    <include file="$(find top_down_render)/launch/top_down_render.launch" pass_all_args="True">
+      <arg name="world_config_path" value="$(find semantics_manager)/config/config_sim.yaml"/>
+      <arg name="init_param_path" value="$(find semantics_manager)/maps/unity_rural3_env/init_conditions.yaml"/>
+      <arg name="output" value="log"/>
+    </include>
+
+    <include file="$(find spomp)/launch/local.launch" pass_all_args="True">
+      <arg name="odom_frame" value="$(arg ns)/odom"/>
+      <arg name="planner_pano_frame" value="$(arg ns)/planner_pano"/>
+      <arg name="body_frame" value="$(arg ns)/body"/>
+      <arg name="control_frame" value="$(arg ns)/base_link"/>
+    </include>
+
+    <include file="$(find spomp)/launch/mapper.launch" pass_all_args="True">
+      <arg name="odom_frame" value="$(arg ns)/odom"/>
+      <arg name="map_frame" value="map"/>
+    </include>
+
+    <!--node name="local_manual_input" type="relay" pkg="topic_tools" args="/move_base_simple/goal spomp_global/local_goal"/-->
+    <include file="$(find spomp)/launch/global.launch" pass_all_args="True">
+      <arg name="world_config_path" value="$(find semantics_manager)/config/config_sim.yaml"/>
+    </include>
+  </group>
+</launch>

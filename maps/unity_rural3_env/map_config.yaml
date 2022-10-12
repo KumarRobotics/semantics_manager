@@ -3,5 +3,3 @@ svg: unity_rural3_env.svg
 raster: unity_rural3_env.png
 viz: unity_rural3_env_viz.png
 resolution: 2.5
-map_origin_px_x: 458
-map_origin_px_y: 363
