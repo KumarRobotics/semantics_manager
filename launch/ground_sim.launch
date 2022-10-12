@@ -25,7 +25,7 @@
       <arg name="body_frame" value="$(arg ns)/body"/>
       <arg name="control_frame" value="$(arg ns)/base_link"/>
 
-      <arg name="TP_inflation_m" value="1"/>
+      <arg name="TP_inflation_m" value="0.5"/>
     </include>
 
     <include file="$(find spomp)/launch/mapper.launch" pass_all_args="True">
