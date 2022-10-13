@@ -3,7 +3,7 @@
   <arg name="ns" default="husky1"/>
   <arg name="output" default="screen"/>
 
-  <arg name="world_config_path" default="$(find semantics_manager)/config/config.yaml"/>
+  <arg name="world_config_path" default="$(find semantics_manager)/config/config_sim.yaml"/>
   <arg name="global" default="True"/>
   <arg name="llol" default="True"/>
 
@@ -16,7 +16,7 @@
     </include>
 
     <include file="$(find top_down_render)/launch/top_down_render.launch" pass_all_args="True">
-      <arg name="world_config_path" value="$(find semantics_manager)/config/config_sim.yaml"/>
+      <arg name="world_config_path" value="$(arg world_config_path)"/>
       <arg name="init_param_path" value="$(find semantics_manager)/maps/unity_rural3_env/init_conditions.yaml"/>
       <arg name="output" value="log"/>
     </include>
@@ -37,7 +37,7 @@
 
     <group if="$(arg global)">
       <include file="$(find spomp)/launch/global.launch" pass_all_args="True">
-        <arg name="world_config_path" value="$(find semantics_manager)/config/config_sim.yaml"/>
+        <arg name="world_config_path" value="$(arg world_config_path)"/>
       </include>
     </group>
     <group if="$(eval not arg('global'))">
