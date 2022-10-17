@@ -5,13 +5,13 @@
 
   <arg name="world_config_path" default="$(find semantics_manager)/config/config_sim.yaml"/>
   <arg name="global" default="True"/>
-  <arg name="llol" default="True"/>
+  <arg name="rofl" default="True"/>
 
   <group ns="$(arg ns)">
-    <include file="$(find llol)/launch/llol.launch" if="$(arg llol)">
+    <include file="$(find svcpp)/launch/rofl_odom.launch" if="$(arg rofl)">
       <arg name="motion_comp" value="False"/>
       <arg name="body_frame" value="$(arg ns)/base"/>
-      <arg name="pano_frame" value="$(arg ns)/pano"/>
+      <arg name="world_frame" value="$(arg ns)/world"/>
       <arg name="odom_frame" value="$(arg ns)/odom"/>
     </include>
 
