@@ -8,8 +8,12 @@
 
   <include file="$(find top_down_render)/launch/top_down_render.launch" pass_all_args="True">
     <arg name="init_param_path" value="$(find semantics_manager)/maps/pennovation2/init_conditions.yaml"/>
-    <arg name="map_pub_scale" value="0.2"/>
     <arg name="output" value="log"/>
+
+    <arg name="filter_pos_cov" value="0.005"/>
+    <arg name="filter_theta_cov" value="0.001"/>
+
+    <arg name="map_pub_scale" value="0.2"/>
   </include>
 
   <include file="$(find spomp)/launch/local.launch" pass_all_args="True"/>
