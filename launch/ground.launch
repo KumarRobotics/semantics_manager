@@ -14,13 +14,15 @@
 
   <include file="$(find spomp)/launch/local.launch" pass_all_args="True"/>
 
-  <include file="$(find spomp)/launch/mapper.launch" pass_all_args="True"/>
+  <include file="$(find spomp)/launch/mapper.launch" pass_all_args="True">
+    <arg name="viz_thread_period_ms" value="10000"/>
+    <arg name="M_pgo_thread_period_ms" value="10000"/>
+  </include>
 
   <include file="$(find spomp)/launch/global.launch" pass_all_args="True">
     <arg name="TM_unvis_start_thresh" value="0.02"/>
 
     <arg name="TG_reach_node_max_dist_m" value="5"/>
-    <arg name="TG_reach_max_dist_to_be_obs_m" value="3"/>
     <arg name="TG_trav_window_rad" value="0.2"/>
   </include>
 </launch>
