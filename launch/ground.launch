@@ -16,7 +16,9 @@
     <arg name="map_pub_scale" value="0.2"/>
   </include>
 
-  <include file="$(find spomp)/launch/local.launch" pass_all_args="True"/>
+  <include file="$(find spomp)/launch/local.launch" pass_all_args="True">
+    <arg name="TP_slope_thresh" value="0.4"/>
+  </include>
 
   <include file="$(find spomp)/launch/mapper.launch" pass_all_args="True">
     <arg name="viz_thread_period_ms" value="10000"/>
@@ -27,6 +29,6 @@
     <arg name="TM_unvis_start_thresh" value="0.02"/>
 
     <arg name="TG_reach_node_max_dist_m" value="5"/>
-    <arg name="TG_trav_window_rad" value="0.2"/>
+    <arg name="TG_trav_window_rad" value="0.3"/>
   </include>
 </launch>
