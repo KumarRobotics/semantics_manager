@@ -17,7 +17,8 @@
   </include>
 
   <include file="$(find spomp)/launch/local.launch" pass_all_args="True">
-    <arg name="TP_slope_thresh" value="0.4"/>
+    <arg name="TP_slope_thresh" value="0.3"/>
+    <arg name="TP_inflation_m" value="0.6"/>
   </include>
 
   <include file="$(find spomp)/launch/mapper.launch" pass_all_args="True">
