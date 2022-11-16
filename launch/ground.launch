@@ -24,6 +24,10 @@
   <include file="$(find spomp)/launch/mapper.launch" pass_all_args="True">
     <arg name="viz_thread_period_ms" value="10000"/>
     <arg name="M_pgo_thread_period_ms" value="10000"/>
+
+    <arg name="PG_num_frames_opt" value="10"/>
+    <arg name="PG_between_uncertainty_loc" value="0.02"/>
+    <arg name="PG_between_uncertainty_rot" value="0.02"/>
   </include>
 
   <include file="$(find spomp)/launch/global.launch" pass_all_args="True">
