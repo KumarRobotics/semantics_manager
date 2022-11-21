@@ -3,6 +3,7 @@
   <arg name="world_config_path" default="$(find semantics_manager)/config/config.yaml"/>
   <arg name="robot_list" default="io,europa,callisto"/>
   <arg name="this_robot" default="io"/>
+  <arg name="aerial_map_ns" default=""/>
 
   <arg name="output" default="screen"/>
   <arg name="rofl" default="True"/>
@@ -16,7 +17,7 @@
     <arg name="filter_pos_cov" value="0.005"/>
     <arg name="filter_theta_cov" value="0.001"/>
 
-    <arg name="map_pub_scale" value="0.2"/>
+    <arg name="map_pub_scale" value="1"/>
   </include>
 
   <include file="$(find spomp)/launch/local.launch" pass_all_args="True">
