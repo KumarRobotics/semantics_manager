@@ -7,37 +7,41 @@
 
   <arg name="output" default="screen"/>
   <arg name="rofl" default="True"/>
+  <arg name="global" default="True"/>
 
   <include file="$(find svcpp)/launch/rofl_odom.launch" if="$(arg rofl)"/>
-
-  <include file="$(find top_down_render)/launch/top_down_render.launch" pass_all_args="True">
-    <arg name="init_param_path" value="$(find semantics_manager)/maps/pennovation2/init_conditions.yaml"/>
-    <arg name="output" value="log"/>
-
-    <arg name="filter_pos_cov" value="0.005"/>
-    <arg name="filter_theta_cov" value="0.001"/>
-
-    <arg name="map_pub_resolution" value="1"/>
-  </include>
 
   <include file="$(find spomp)/launch/local.launch" pass_all_args="True">
     <arg name="TP_slope_thresh" value="0.3"/>
     <arg name="TP_inflation_m" value="0.6"/>
+    <arg name="goal_topic" value="/move_base_simple/goal" if="$(eval not arg('global'))"/>
   </include>
 
-  <include file="$(find spomp)/launch/mapper.launch" pass_all_args="True">
-    <arg name="viz_thread_period_ms" value="10000"/>
-    <arg name="M_pgo_thread_period_ms" value="10000"/>
+  <group if="$(arg global)">
+    <include file="$(find top_down_render)/launch/top_down_render.launch" pass_all_args="True">
+      <arg name="init_param_path" value="$(find semantics_manager)/maps/pennovation2/init_conditions.yaml"/>
+      <arg name="output" value="log"/>
 
-    <arg name="PG_num_frames_opt" value="10"/>
-    <arg name="PG_between_uncertainty_loc" value="0.02"/>
-    <arg name="PG_between_uncertainty_rot" value="0.02"/>
-  </include>
+      <arg name="filter_pos_cov" value="0.005"/>
+      <arg name="filter_theta_cov" value="0.001"/>
 
-  <include file="$(find spomp)/launch/global.launch" pass_all_args="True">
-    <arg name="TM_unvis_start_thresh" value="0.02"/>
+      <arg name="map_pub_resolution" value="1"/>
+    </include>
 
-    <arg name="TG_reach_node_max_dist_m" value="5"/>
-    <arg name="TG_trav_window_rad" value="0.3"/>
-  </include>
+    <include file="$(find spomp)/launch/mapper.launch" pass_all_args="True">
+      <arg name="viz_thread_period_ms" value="10000"/>
+      <arg name="M_pgo_thread_period_ms" value="10000"/>
+
+      <arg name="PG_num_frames_opt" value="10"/>
+      <arg name="PG_between_uncertainty_loc" value="0.02"/>
+      <arg name="PG_between_uncertainty_rot" value="0.02"/>
+    </include>
+
+    <include file="$(find spomp)/launch/global.launch" pass_all_args="True">
+      <arg name="TM_unvis_start_thresh" value="0.02"/>
+
+      <arg name="TG_reach_node_max_dist_m" value="5"/>
+      <arg name="TG_trav_window_rad" value="0.3"/>
+    </include>
+  </group>
 </launch>
