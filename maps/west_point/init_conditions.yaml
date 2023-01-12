@@ -4,3 +4,4 @@ svg_origin_y: 0
 init_pos_px_x: 600
 init_pos_px_y: 809
 init_pos_px_cov: 20
+init_pos_theta_deg: none
