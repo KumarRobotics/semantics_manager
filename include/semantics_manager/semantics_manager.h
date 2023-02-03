@@ -24,6 +24,7 @@ struct MapConfig {
   bool dynamic;
   std::string svg_path{""};
   std::string raster_path{""};
+  std::string color_path{""};
   std::string viz_path{""};
   float resolution;
   bool have_fixed_origin;

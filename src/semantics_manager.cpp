@@ -97,6 +97,10 @@ MapConfig::MapConfig(const std::string& map_config_path) {
       if (map_config_file["raster"]) {
         raster_path = parent_path / path(map_config_file["raster"].as<std::string>());
       }
+      if (map_config_file["color"]) {
+        // Optional.  Used for terrain estimate if provided
+        color_path = parent_path / path(map_config_file["color"].as<std::string>());
+      }
       if (map_config_file["viz"]) {
         viz_path = parent_path / path(map_config_file["viz"].as<std::string>());
       } else if (raster_path != "") {
