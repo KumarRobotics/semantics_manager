@@ -9,7 +9,7 @@
   <arg name="rofl" default="True"/>
   <arg name="global" default="True"/>
 
-  <include file="$(find svcpp)/launch/rofl_odom.launch" if="$(arg rofl)"/>
+  <include file="$(find rofl)/launch/rofl_odom.launch" if="$(arg rofl)"/>
 
   <include file="$(find spomp)/launch/local.launch" pass_all_args="True">
     <arg name="TP_slope_thresh" value="0.3"/>
