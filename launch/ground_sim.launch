@@ -5,20 +5,12 @@
 
   <arg name="world_config_path" default="$(find semantics_manager)/config/config_sim.yaml"/>
   <arg name="global" default="True"/>
-  <arg name="rofl" default="True"/>
 
   <group ns="$(arg ns)">
-    <include file="$(find svcpp)/launch/rofl_odom.launch" if="$(arg rofl)">
-      <arg name="motion_comp" value="False"/>
-      <arg name="body_frame" value="$(arg ns)/base"/>
-      <arg name="world_frame" value="$(arg ns)/world"/>
-      <arg name="odom_frame" value="$(arg ns)/odom"/>
-    </include>
-
     <include file="$(find top_down_render)/launch/top_down_render.launch" pass_all_args="True">
       <arg name="world_config_path" value="$(arg world_config_path)"/>
       <arg name="init_param_path" value="$(find semantics_manager)/maps/unity_rural3_env/init_conditions.yaml"/>
-      <arg name="output" value="log"/>
+      <!--arg name="output" value="log"/-->
     </include>
 
     <include file="$(find spomp)/launch/local.launch" pass_all_args="True">
