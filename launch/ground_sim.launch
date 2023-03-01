@@ -1,44 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
-  <arg name="ns" default="husky1"/>
-  <arg name="aerial_map_ns" default="quadrotor"/>
-  <arg name="output" default="screen"/>
-
   <arg name="world_config_path" default="$(find semantics_manager)/config/config_sim.yaml"/>
   <arg name="global" default="True"/>
+  <arg name="goal_manager" default="True"/>
+  <arg name="output" default="screen"/>
 
-  <group ns="$(arg ns)">
+  <arg name="robot_list" default="husky1,test_robot"/>
+  <arg name="this_robot" default="husky1"/>
+  <arg name="aerial_map_ns" default="quadrotor"/>
+
+  <group ns="$(arg this_robot)">
     <include file="$(find top_down_render)/launch/top_down_render.launch" pass_all_args="True">
       <arg name="world_config_path" value="$(arg world_config_path)"/>
       <arg name="init_param_path" value="$(find semantics_manager)/maps/dynamic_sim/init_conditions.yaml"/>
-      <!--arg name="output" value="log"/-->
+      <arg name="output" value="log"/>
     </include>
 
     <include file="$(find spomp)/launch/local.launch" pass_all_args="True">
-      <arg name="odom_frame" value="$(arg ns)/odom"/>
-      <arg name="planner_pano_frame" value="$(arg ns)/planner_pano"/>
-      <arg name="body_frame" value="$(arg ns)/body"/>
-      <arg name="control_frame" value="$(arg ns)/base_link"/>
+      <arg name="odom_frame" value="$(arg this_robot)/odom"/>
+      <arg name="planner_pano_frame" value="$(arg this_robot)/planner_pano"/>
+      <arg name="body_frame" value="$(arg this_robot)/body"/>
+      <arg name="control_frame" value="$(arg this_robot)/base_link"/>
 
-      <arg name="TP_inflation_m" value="0.5"/>
+      <arg name="TP_min_noise_size" default="0.1"/>
+      <arg name="TP_slope_thresh" value="0.25"/>
+      <arg name="TP_inflation_m" value="0.75"/>
+      <arg name="PP_max_spacing_m" value="0.7"/>
+      <arg name="output" value="log"/>
     </include>
 
     <include file="$(find spomp)/launch/mapper.launch" pass_all_args="True">
-      <arg name="odom_frame" value="$(arg ns)/odom"/>
+      <arg name="odom_frame" value="$(arg this_robot)/odom"/>
       <arg name="map_frame" value="map"/>
+      <arg name="output" value="log"/>
     </include>
 
     <group if="$(arg global)">
       <include file="$(find spomp)/launch/global.launch" pass_all_args="True">
         <arg name="TM_learn_trav" value="True"/>
         <arg name="TM_no_max_terrain_in_graph" value="False"/>
-        <arg name="TM_unvis_start_thresh" value="0.02"/>
+        <arg name="TM_vis_dist_m" value="7"/>
+        <arg name="TG_reach_node_max_dist_m" value="4"/>
 
         <arg name="world_config_path" value="$(arg world_config_path)"/>
       </include>
     </group>
     <group if="$(eval not arg('global'))">
       <node name="local_manual_input" type="relay" pkg="topic_tools" args="/move_base_simple/goal spomp_global/local_goal"/>
+    </group>
+
+    <group if="$(arg goal_manager)">
+      <include file="$(find spomp)/launch/goal_manager.launch" pass_all_args="True">
+      </include>
     </group>
   </group>
 </launch>
