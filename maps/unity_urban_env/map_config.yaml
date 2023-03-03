@@ -4,3 +4,5 @@ viz: unity_urban_env.png
 resolution: 2.66
 image_origin_px_x: 529
 image_origin_px_y: 235
+quad_plan: unity_urban_env.plan
+quad_plan_format: Sim
