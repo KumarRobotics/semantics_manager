@@ -1,7 +1,8 @@
-dynamic: False
-raster: unity_urban_env.png
-viz: unity_urban_env.png
-resolution: 2.66
+dynamic: True
+resolution: 2
+# Quad planning. These are not used by asoom, only for the quad mission
+color: unity_urban_env.png
+img_resolution: 2.66
 image_origin_px_x: 529
 image_origin_px_y: 235
 quad_plan: unity_urban_env.plan
