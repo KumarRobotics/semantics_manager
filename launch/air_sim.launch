@@ -6,6 +6,7 @@
 
   <arg name="robot_list" default="husky1,husky2"/>
   <arg name="global" default="True"/>
+  <arg name="sim" default="True"/>
 
   <include file="$(find fake_quad_waypt)/launch/fake_quad_waypt.launch">
     <arg name="robot" value="$(arg ns)"/>
@@ -27,12 +28,8 @@
 
       <arg name="map_req_point_density" value="20"/>
     </include>
-
-    <node pkg="air_router" type="navigator.py" name="navigator" output="$(arg output)">
-      <param name="map_name" value="unity_urban_env"/>
-    </node>
-    <node pkg="air_router" type="state_machine.py" name="state_machine" output="$(arg output)">
-      <param name="robot_list" value="$(arg robot_list)"/>
-    </node>
+    <include file="$(find air_router)/launch/titan.launch" pass_all_args="True">
+      <arg name="search_time" value="120" />
+    </include>
   </group>
 </launch>
