@@ -1,2 +1,2 @@
 classes: ../classes/classes.yaml
-map: ../maps/dynamic_sim/map_config.yaml
+map: ../maps/unity_urban_env/map_config.yaml

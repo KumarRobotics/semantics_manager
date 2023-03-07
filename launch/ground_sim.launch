@@ -5,14 +5,14 @@
   <arg name="goal_manager" default="True"/>
   <arg name="output" default="screen"/>
 
-  <arg name="robot_list" default="husky1,test_robot"/>
+  <arg name="robot_list" default="husky1,husky2"/>
   <arg name="this_robot" default="husky1"/>
   <arg name="aerial_map_ns" default="quadrotor"/>
 
   <group ns="$(arg this_robot)">
     <include file="$(find top_down_render)/launch/top_down_render.launch" pass_all_args="True">
       <arg name="world_config_path" value="$(arg world_config_path)"/>
-      <arg name="init_param_path" value="$(find semantics_manager)/maps/dynamic_sim/init_conditions.yaml"/>
+      <arg name="init_param_path" value="$(find semantics_manager)/maps/unity_urban_env/init_conditions.yaml"/>
       <arg name="output" value="log"/>
     </include>
 
