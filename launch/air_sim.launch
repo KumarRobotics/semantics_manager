@@ -30,6 +30,8 @@
     </include>
     <include file="$(find air_router)/launch/titan.launch" pass_all_args="True">
       <arg name="search_time" value="120" />
+      <arg name="initial_expl_time" value="100"/>
+      <arg name="short_expl_time" value="40"/>
     </include>
   </group>
 </launch>

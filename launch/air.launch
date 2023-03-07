@@ -7,7 +7,7 @@
   <arg name="decompress" default="False"/>
   <arg name="orbslam" default="True"/>
   <arg name="use_semantics" default="True"/>
-  <arg name="sim" default="false"/>
+  <arg name="sim" default="False"/>
 
   <group if="$(arg decompress)">
     <node pkg="image_transport" type="republish" name="republish" output="screen" args="compressed in:=/ovc/rgb/image_color raw out:=/ovc/rgb/image_color"/>
