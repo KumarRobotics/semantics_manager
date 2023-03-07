@@ -7,6 +7,7 @@
   <arg name="decompress" default="False"/>
   <arg name="orbslam" default="True"/>
   <arg name="use_semantics" default="True"/>
+  <arg name="sim" default="False"/>
 
   <group if="$(arg decompress)">
     <node pkg="image_transport" type="republish" name="republish" output="screen" args="compressed in:=/ovc/rgb/image_color raw out:=/ovc/rgb/image_color"/>
@@ -17,6 +18,9 @@
   <include file="$(find erfnet_pytorch_ros)/launch/erfnet_ros.launch" if="$(arg use_semantics)" pass_all_args="True"/>
 
   <include file="$(find asoom)/launch/asoom.launch" pass_all_args="True"/>
+  <include file="$(find air_router)/launch/titan.launch" pass_all_args="True">
+    <arg name="search_time" value="120" />
+  </include>
 
   <node name="map_compressor" pkg="grid_map_comp" type="compressor_node" output="$(arg output)">
     <remap from="~map" to="/asoom/map"/>
