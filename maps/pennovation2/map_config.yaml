@@ -4,3 +4,6 @@ raster: pennovation2.png
 color: pennovation2_color.png
 viz: pennovation2_viz.png
 resolution: 5.07
+quad_plan: pennovation2.plan
+quad_plan_format: QGC
+
