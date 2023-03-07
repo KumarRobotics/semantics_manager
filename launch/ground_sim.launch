@@ -12,7 +12,7 @@
   <group ns="$(arg this_robot)">
     <include file="$(find top_down_render)/launch/top_down_render.launch" pass_all_args="True">
       <arg name="world_config_path" value="$(arg world_config_path)"/>
-      <arg name="init_param_path" value="$(find semantics_manager)/maps/unity_urban_env/init_conditions.yaml"/>
+      <arg name="init_param_path" value="$(find semantics_manager)/maps/dynamic_unity_urban/init_conditions.yaml"/>
       <arg name="output" value="log"/>
     </include>
 
