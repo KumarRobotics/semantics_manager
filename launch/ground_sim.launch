@@ -3,6 +3,7 @@
   <arg name="world_config_path" default="$(find semantics_manager)/config/config_sim.yaml"/>
   <arg name="global" default="True"/>
   <arg name="goal_manager" default="True"/>
+  <arg name="find_obj" default="True"/>
   <arg name="output" default="screen"/>
 
   <arg name="robot_list" default="husky1,husky2"/>
