@@ -11,7 +11,7 @@
   <arg name="air_router" default="True"/>
 
   <group if="$(arg decompress)">
-    <node pkg="image_transport" type="republish" name="republish" output="screen" args="compressed in:=/ovc/rgb/image_color raw out:=/ovc/rgb/image_color"/>
+    <node pkg="image_transport" type="republish" name="republish_ovc" output="screen" args="compressed in:=/ovc/rgb/image_color raw out:=/ovc/rgb/image_color"/>
   </group>
 
   <include file="$(find orbslam3_ros)/launch/orbslam3_ros.launch" if="$(arg orbslam)" pass_all_args="True"/>
