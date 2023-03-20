@@ -8,6 +8,8 @@
   <arg name="output" default="screen"/>
   <arg name="rofl" default="True"/>
   <arg name="global" default="True"/>
+  <arg name="goal_manager" default="True"/>
+  <arg name="find_obj" default="True"/>
 
   <include file="$(find rofl)/launch/rofl_odom.launch" if="$(arg rofl)"/>
 
@@ -46,5 +48,10 @@
       <arg name="TG_reach_node_max_dist_m" value="5"/>
       <arg name="TG_trav_window_rad" value="0.3"/>
     </include>
+
+    <group if="$(arg goal_manager)">
+      <include file="$(find spomp)/launch/goal_manager.launch" pass_all_args="True">
+      </include>
+    </group>
   </group>
 </launch>
