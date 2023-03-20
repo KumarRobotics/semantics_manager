@@ -43,6 +43,8 @@
     <include file="$(find spomp)/launch/global.launch" pass_all_args="True">
       <arg name="TM_learn_trav" value="True"/>
       <arg name="TM_no_max_terrain_in_graph" value="False"/>
+      <arg name="TM_max_hole_fill_size_m" value="1"/>
+      <arg name="TM_min_region_size_m" value="0"/>
       <arg name="TM_unvis_start_thresh" value="0.02"/>
 
       <arg name="TG_reach_node_max_dist_m" value="5"/>
@@ -51,6 +53,8 @@
 
     <group if="$(arg goal_manager)">
       <include file="$(find spomp)/launch/goal_manager.launch" pass_all_args="True">
+        <arg name="find_obj_merge_dist_m" value="15"/>
+        <arg name="find_obj_min_size_m" value="5"/>
       </include>
     </group>
   </group>

@@ -18,7 +18,10 @@
 
   <include file="$(find erfnet_pytorch_ros)/launch/erfnet_ros.launch" if="$(arg use_semantics)" pass_all_args="True"/>
 
-  <include file="$(find asoom)/launch/asoom.launch" pass_all_args="True"/>
+  <include file="$(find asoom)/launch/asoom.launch" pass_all_args="True">
+    <arg name="map_req_point_density" value="50"/>
+    <arg name="keyframe_dist_thresh_m" value="3"/>
+  </include>
 
   <node name="map_compressor" pkg="grid_map_comp" type="compressor_node" output="$(arg output)">
     <remap from="~map" to="/asoom/map"/>
