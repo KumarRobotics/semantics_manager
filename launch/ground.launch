@@ -10,6 +10,8 @@
   <arg name="global" default="True"/>
   <arg name="goal_manager" default="True"/>
   <arg name="find_obj" default="True"/>
+  <arg name="db" default="True" />
+
 
   <include file="$(find rofl)/launch/rofl_odom.launch" if="$(arg rofl)"/>
 
@@ -57,5 +59,10 @@
         <arg name="find_obj_min_size_m" value="5"/>
       </include>
     </group>
+  </group>
+  <group if="$(arg db)">
+    <include file="$(find comm_stack_launch)/launch/jackal.launch" pass_all_args="True">
+      <arg name="robot_name" value="$(arg this_robot)" />
+    </include>
   </group>
 </launch>
