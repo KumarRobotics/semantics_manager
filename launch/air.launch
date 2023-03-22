@@ -24,8 +24,7 @@
   </include>
 
   <node name="map_compressor" pkg="grid_map_comp" type="compressor_node" output="$(arg output)">
-    <remap from="~map" to="/asoom/map"/>
-    <remap from="~map/compressed" to="/asoom/map/compressed"/>
+    <param name="~map_topic_name" value="/asoom/map"/>
     <param name="~layer_config" value="$(find semantics_manager)/config/map_compressed_layers.yaml"/>
   </node>
 
