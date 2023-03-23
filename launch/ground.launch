@@ -16,8 +16,13 @@
   <include file="$(find rofl)/launch/rofl_odom.launch" if="$(arg rofl)"/>
 
   <include file="$(find spomp)/launch/local.launch" pass_all_args="True">
+    <arg name="TP_target_dist_xy" value="0.3"/>
+    <arg name="TP_noise_m" value="0.05"/>
     <arg name="TP_slope_thresh" value="0.3"/>
     <arg name="TP_inflation_m" value="0.6"/>
+
+    <arg name="PP_max_spacing_m" value="0.5"/>
+
     <arg name="goal_topic" value="/move_base_simple/goal" if="$(eval not arg('global'))"/>
   </include>
 
@@ -47,6 +52,8 @@
     </include>
 
     <include file="$(find spomp)/launch/global.launch" pass_all_args="True">
+      <arg name="G_timeout_duration_s_per_m" value="2"/>
+
       <arg name="TM_learn_trav" value="True"/>
       <arg name="TM_no_max_terrain_in_graph" value="False"/>
       <arg name="TM_max_hole_fill_size_m" value="1"/>
@@ -59,6 +66,8 @@
 
     <group if="$(arg goal_manager)">
       <include file="$(find spomp)/launch/goal_manager.launch" pass_all_args="True">
+        <arg name="goal_manager_min_goal_dist_m" value="15"/>
+
         <arg name="find_obj_merge_dist_m" value="15"/>
         <arg name="find_obj_min_size_m" value="5"/>
       </include>
