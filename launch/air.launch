@@ -9,6 +9,7 @@
   <arg name="use_semantics" default="True"/>
   <arg name="sim" default="False"/>
   <arg name="air_router" default="True"/>
+  <arg name="db" default="True"/>
 
   <group if="$(arg decompress)">
     <node pkg="image_transport" type="republish" name="republish_ovc" output="screen" args="compressed in:=/ovc/rgb/image_color raw out:=/ovc/rgb/image_color"/>
@@ -34,6 +35,11 @@
       <arg name="output" value="screen"/>
       <arg name="initial_expl_time" value="180"/>
       <arg name="search_time" value="120"/>
+    </include>
+  </group>
+  <group if="$(arg db)">
+    <include file="$(find comm_stack_launch)/launch/titan.launch" pass_all_args="True">
+      <arg name="robot_name" value="titan" />
     </include>
   </group>
 </launch>
