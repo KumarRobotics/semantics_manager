@@ -2,7 +2,7 @@
 <launch>
   <arg name="world_config_path" default="$(find semantics_manager)/config/config.yaml"/>
   <arg name="robot_list" default="io,europa,callisto"/>
-  <arg name="this_robot" default="io"/>
+  <arg name="this_robot" default="$(env ROBOT_NAME)"/>
   <arg name="aerial_map_ns" default=""/>
 
   <arg name="output" default="screen"/>
