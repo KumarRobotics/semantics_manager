@@ -10,8 +10,8 @@
   <arg name="global" default="True"/>
   <arg name="goal_manager" default="True"/>
   <arg name="find_obj" default="True"/>
-  <arg name="db" default="True" />
-
+  <arg name="ddb" default="True"/>
+  <arg name="object_mapper" default="True"/>
 
   <include file="$(find rofl)/launch/rofl_odom.launch" if="$(arg rofl)"/>
 
@@ -76,10 +76,16 @@
     </group>
   </group>
 
-  <group if="$(arg db)">
+  <group if="$(arg ddb)">
     <remap from="/basestation/target_goals" to="/find_object_goal_gen/target_goals"/>
     <include file="$(find comm_stack_launch)/launch/jackal.launch" pass_all_args="True">
-      <arg name="robot_name" value="$(arg this_robot)" />
+      <arg name="robot_name" value="$(arg this_robot)"/>
+    </include>
+  </group>
+
+  <group if="$(arg object_mapper)">
+    <include file="$(find dcist_target_distance)/launch/target_distance_jackal.launch" pass_all_args="True">
+      <arg name="output" value="log"/>
     </include>
   </group>
 </launch>
