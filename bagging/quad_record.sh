@@ -139,6 +139,7 @@ rosbag record -o $1 \
 /ublox/fix_velocity \
 /asoom/viz \
 /asoom/recent_cloud \
+/asoom/recent_key_pose \
 /asoom/map/compressed \
 /orbslam3_ros_node/pose \
 /clock \
