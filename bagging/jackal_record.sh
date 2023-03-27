@@ -40,10 +40,15 @@ rosbag record --split --size=4096 -b 1024 -o $1 \
 /callisto/goal_manager/claimed_goals \
 /titan/asoom/map/compressed \
 /titan/asoom/recent_key_pose \
-/rajant/log \
-/rajant/rssi/titan \
-/rajant/rssi/basestation \
-/rajant/rssi/callisto \
-/rajant/rssi/europa \
-/rajant/rssi/io \
-/topic_publisher/hashes
+/ddb/rajant/log \
+/ddb/rajant/rssi/titan \
+/ddb/rajant/rssi/basestation \
+/ddb/rajant/rssi/callisto \
+/ddb/rajant/rssi/europa \
+/ddb/rajant/rssi/io \
+/ddb/topic_publisher/hashes \
+/ddb/sync_complete/titan \
+/ddb/sync_complete/basestation \
+/ddb/sync_complete/callisto \
+/ddb/sync_complete/europa \
+/ddb/sync_complete/io

@@ -146,12 +146,6 @@ rosbag record -o $1 \
 /air_router/navigator/state \
 /air_router/navigator/viz/compressed \
 /air_router/start \
-/rajant/log \
-/rajant/rssi/basestation \
-/rajant/rssi/callisto \
-/rajant/rssi/europa \
-/rajant/rssi/io \
-/topic_publisher/hashes \
 /europa/top_down_render/pose_est \
 /europa/object_mapper/map \
 /europa/spomp_global/reachability_history \
@@ -170,3 +164,14 @@ rosbag record -o $1 \
 /titan/asoom/map/compressed \
 /titan/asoom/recent_key_pose \
 /basestation/target_goals
+/ddb/rajant/log \
+/ddb/rajant/rssi/basestation \
+/ddb/rajant/rssi/callisto \
+/ddb/rajant/rssi/europa \
+/ddb/rajant/rssi/io \
+/ddb/topic_publisher/hashes \
+/ddb/sync_complete/titan \
+/ddb/sync_complete/basestation \
+/ddb/sync_complete/callisto \
+/ddb/sync_complete/europa \
+/ddb/sync_complete/io
