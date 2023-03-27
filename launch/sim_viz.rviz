@@ -70,7 +70,7 @@ Visualization Manager:
       Marker Topic: /husky1/goal_manager/goal_viz
       Name: GlobalGoals
       Namespaces:
-        {}
+        robot_goals: true
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -343,16 +343,16 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 155.31968688964844
+      Distance: 260.6549072265625
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -3.147907018661499
-        Y: -8.683515548706055
-        Z: 30.95753288269043
+        X: -0.5289513468742371
+        Y: -6.0422492027282715
+        Z: 30.96013641357422
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
@@ -361,7 +361,7 @@ Visualization Manager:
       Pitch: 1.5697963237762451
       Target Frame: map
       Value: Orbit (rviz)
-      Yaw: 4.72996187210083
+      Yaw: 4.709961891174316
     Saved: ~
 Window Geometry:
   Displays:
