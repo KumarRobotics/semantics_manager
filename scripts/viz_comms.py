@@ -11,6 +11,7 @@ class VizComms:
     def __init__(self):
         self.robot_list_ = rospy.get_param("~robot_list").split(',')
         self.aerial_robot_name_ = rospy.get_param("~aerial_map_ns")
+        self.rssi_thresh_ = rospy.get_param("~rssi_thresh", 20)
         self.robot_list_.append(self.aerial_robot_name_)
 
         self.rssi_subs_ = []
@@ -34,7 +35,7 @@ class VizComms:
                     self.rssi_subs_.append(rospy.Subscriber(f"/{robot1}/rajant/rssi/{robot2}", Int32, rssi_cb))
 
         self.comm_viz_pub_ = rospy.Publisher("~comm_viz", Marker, queue_size=1)
-        self.viz_timer_ = rospy.Timer(rospy.Duration(5), self.viz_cb, oneshot=False)
+        self.viz_timer_ = rospy.Timer(rospy.Duration(1), self.viz_cb, oneshot=False)
 
     def pose_cb(self, pose_msg, robot):
         pose_only_msg = pose_msg.pose
@@ -59,7 +60,7 @@ class VizComms:
                     if rospy.get_time() - rssi2['stamp'] > 10:
                         rssi2['rssi'] = 0
 
-                    if rssi1['rssi'] > 20 or rssi2['rssi'] > 20:
+                    if rssi1['rssi'] > self.rssi_thresh_ or rssi2['rssi'] > self.rssi_thresh_:
                         r1pos = self.robot_positions_[robot1]
                         r2pos = self.robot_positions_[robot2]
                         comm_edges.append(Point(r1pos[0], r1pos[1], r1pos[2]))
