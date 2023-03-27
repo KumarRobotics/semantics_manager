@@ -4,7 +4,7 @@
   <arg name="ns" default="quadrotor"/>
   <arg name="output" default="screen"/>
 
-  <arg name="robot_list" default="husky1,husky2"/>
+  <arg name="robot_list" default="husky1,husky2,husky3"/>
   <arg name="global" default="True"/>
   <arg name="sim" default="True"/>
   <arg name="air_router" default="True"/>
@@ -32,9 +32,10 @@
 
     <group if="$(arg air_router)">
       <include file="$(find air_router)/launch/titan.launch" pass_all_args="True">
+        <arg name="short_expl_time" value="40"/>
         <arg name="search_time" value="120" />
         <arg name="initial_expl_time" value="100"/>
-        <arg name="short_expl_time" value="40"/>
+        <arg name="recent_pose_time_threshold" value="30"/>
       </include>
     </group>
   </group>
