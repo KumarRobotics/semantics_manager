@@ -46,9 +46,14 @@ rosbag record --split --size=4096 -b 1024 -o $1 \
 /ddb/rajant/rssi/callisto \
 /ddb/rajant/rssi/europa \
 /ddb/rajant/rssi/io \
-/ddb/topic_publisher/hashes \
-/ddb/sync_complete/titan \
-/ddb/sync_complete/basestation \
-/ddb/sync_complete/callisto \
-/ddb/sync_complete/europa \
-/ddb/sync_complete/io
+/ddb/topic_publisher/headers \
+/ddb/client_sync_complete/titan \
+/ddb/client_sync_complete/basestation \
+/ddb/client_sync_complete/callisto \
+/ddb/client_sync_complete/europa \
+/ddb/client_sync_complete/io \
+/ddb/server_sync_complete/titan \
+/ddb/server_sync_complete/basestation \
+/ddb/server_sync_complete/callisto \
+/ddb/server_sync_complete/europa \
+/ddb/server_sync_complete/io
