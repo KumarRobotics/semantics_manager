@@ -56,7 +56,7 @@ class FusedBag:
                     trans.child_frame_id = self.prepend_robot_to_frame(robot, trans.child_frame_id)
                 self.fused_bag_.write(topic, msg, t)
             else:
-                if hasattr(msg, "header"):
+                if hasattr(msg, "header") and hasattr(msg.header, "frame_id"):
                     msg.header.frame_id = self.prepend_robot_to_frame(robot, msg.header.frame_id)
                 self.fused_bag_.write(f"/{robot}{topic}", msg, t)
 

@@ -32,7 +32,7 @@ class VizComms:
                 if robot1 != robot2:
                     self.rssis_[robot1][robot2] = {'rssi': 0, 'stamp': 0}
                     rssi_cb = partial(self.rssi_cb, robot1=robot1, robot2=robot2)
-                    self.rssi_subs_.append(rospy.Subscriber(f"/{robot1}/rajant/rssi/{robot2}", Int32, rssi_cb))
+                    self.rssi_subs_.append(rospy.Subscriber(f"/{robot1}/ddb/rajant/rssi/{robot2}", Int32, rssi_cb))
 
         self.comm_viz_pub_ = rospy.Publisher("~comm_viz", Marker, queue_size=1)
         self.viz_timer_ = rospy.Timer(rospy.Duration(1), self.viz_cb, oneshot=False)
