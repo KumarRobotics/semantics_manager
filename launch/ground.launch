@@ -16,7 +16,7 @@
   <include file="$(find rofl)/launch/rofl_odom.launch" if="$(arg rofl)"/>
 
   <include file="$(find spomp)/launch/local.launch" pass_all_args="True">
-    <arg name="TP_target_dist_xy" value="0.3"/>
+    <arg name="TP_target_dist_xy" value="0.4"/>
     <arg name="TP_noise_m" value="0.05"/>
     <arg name="TP_slope_thresh" value="0.3"/>
     <arg name="TP_inflation_m" value="0.6"/>
