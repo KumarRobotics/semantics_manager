@@ -180,4 +180,9 @@ rosbag record -o $1 \
 /ddb/server_sync_complete/basestation \
 /ddb/server_sync_complete/callisto \
 /ddb/server_sync_complete/europa \
-/ddb/server_sync_complete/io
+/ddb/server_sync_complete/io \
+/ddb/sm_state/callisto \
+/ddb/sm_state/europa  \
+/ddb/sm_state/io \
+/ddb/sm_state/titan \
+/ddb/sm_state/basestation
