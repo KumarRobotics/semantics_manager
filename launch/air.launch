@@ -34,7 +34,7 @@
       <!-- Always publish air_router output -->
       <arg name="output" value="screen"/>
       <arg name="initial_expl_time" value="180"/>
-      <arg name="search_time" value="120"/>
+      <arg name="search_time" value="30"/>
     </include>
   </group>
   <group if="$(arg db)">
