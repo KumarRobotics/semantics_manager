@@ -181,8 +181,13 @@ rosbag record -o $1 \
 /ddb/server_sync_complete/callisto \
 /ddb/server_sync_complete/europa \
 /ddb/server_sync_complete/io \
-/ddb/sm_state/callisto \
-/ddb/sm_state/europa  \
-/ddb/sm_state/io \
-/ddb/sm_state/titan \
-/ddb/sm_state/basestation
+/ddb/client_sm_state/callisto \
+/ddb/client_sm_state/europa  \
+/ddb/client_sm_state/io \
+/ddb/client_sm_state/titan \
+/ddb/client_sm_state/basestation \
+/ddb/client_stats/callisto \
+/ddb/client_stats/europa  \
+/ddb/client_stats/io \
+/ddb/client_stats/titan \
+/ddb/client_stats/basestation
