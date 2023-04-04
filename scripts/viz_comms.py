@@ -16,7 +16,7 @@ class VizComms:
     def __init__(self):
         self.robot_list_ = rospy.get_param("~robot_list").split(',')
         self.aerial_robot_name_ = rospy.get_param("~aerial_map_ns")
-        self.rssi_thresh_ = rospy.get_param("~rssi_thresh", 20)
+        self.rssi_thresh_ = rospy.get_param("~rssi_thresh", 30)
         self.robot_list_.append(self.aerial_robot_name_)
 
         world_config_path = rospy.get_param("~world_config_path",
