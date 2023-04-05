@@ -10,6 +10,7 @@ rosbag record --split --size=4096 -b 1024 -o $1 \
 /imu/data_raw  \
 /navsat/fix \
 /jackal_velocity_controller/cmd_vel \
+/jackal_teleop/is_auto \
 /object_mapper/map \
 /top_down_render/pose_est \
 /spomp_local/reachability \
