@@ -19,6 +19,7 @@ rosbag record --split --size=4096 -b 1024 -o $1 \
 /spomp_global/path_viz \
 /spomp_global/reachability_history \
 /spomp_global/aerial_map_trav_viz/compressed \
+/spomp_mapper/map/compressed \
 /top_down_render/map_viz/compressed \
 /os_node/rofl_odom/pose \
 /goal_manager/goal_viz \

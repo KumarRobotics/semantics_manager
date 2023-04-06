@@ -27,7 +27,7 @@
   </include>
 
   <group if="$(arg global)">
-    <node pkg="grid_map_comp" type="decompressor_node" name="map_decompressor" output="$(arg output)">
+    <node pkg="grid_map_comp" type="decompressor_node" name="aerial_map_decompressor" output="$(arg output)">
       <param name="~map_topic_name" value="/$(arg aerial_map_ns)/asoom/map"/>
     </node>
 
@@ -50,6 +50,11 @@
       <arg name="PG_between_uncertainty_loc" value="0.02"/>
       <arg name="PG_between_uncertainty_rot" value="0.02"/>
     </include>
+
+    <node pkg="grid_map_comp" type="compressor_node" name="ground_map_compressor" output="$(arg output)">
+      <param name="~map_topic_name" value="/spomp_mapper/map"/>
+      <param name="~layer_config" value="$(find semantics_manager)/config/map_compressed_layers.yaml"/>
+    </node>
 
     <include file="$(find spomp)/launch/global.launch" pass_all_args="True">
       <arg name="G_timeout_duration_s_per_m" value="2"/>
