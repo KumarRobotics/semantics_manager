@@ -71,7 +71,7 @@
         <arg name="goal_manager_min_goal_dist_m" value="15"/>
 
         <arg name="find_obj_merge_dist_m" value="15"/>
-        <arg name="find_obj_min_size_m" value="5"/>
+        <arg name="find_obj_min_size_m" value="8"/>
       </include>
     </group>
   </group>

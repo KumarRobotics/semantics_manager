@@ -40,7 +40,10 @@
       <include file="$(find spomp)/launch/global.launch" pass_all_args="True">
         <arg name="TM_learn_trav" value="True"/>
         <arg name="TM_no_max_terrain_in_graph" value="False"/>
+        <arg name="TM_max_hole_fill_size_m" value="1"/>
+        <arg name="TM_min_region_size_m" value="0"/>
         <arg name="TM_vis_dist_m" value="7"/>
+
         <arg name="TG_reach_node_max_dist_m" value="4"/>
 
         <arg name="world_config_path" value="$(arg world_config_path)"/>
