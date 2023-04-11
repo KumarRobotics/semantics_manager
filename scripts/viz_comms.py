@@ -93,12 +93,12 @@ class VizComms:
             for robot2 in self.robot_list_:
                 if robot1 != robot2:
                     rssi = self.rssis_[robot1][robot2]
-                    if rospy.get_time() - rssi['stamp'] > 10:
+                    if rospy.get_time() - rssi['stamp'] > 5:
                         rssi['rssi'] = 0
 
                     r1pos = self.robot_positions_[robot1]
                     r2pos = self.robot_positions_[robot2]
-                    if rospy.get_time() - rssi['last_sc'] < 10:
+                    if rospy.get_time() - rssi['last_sc'] < 2:
                         sc_edges.append(Point(r1pos[0], r1pos[1], r1pos[2]))
                         sc_edges.append(Point(r2pos[0], r2pos[1], r2pos[2]))
                         sc_colors.append(ColorRGBA(0, 0, 1, 0.5))
