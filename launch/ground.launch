@@ -19,7 +19,7 @@
     <arg name="TP_target_dist_xy" value="0.5"/>
     <arg name="TP_noise_m" value="0.05"/>
     <arg name="TP_slope_thresh" value="0.3"/>
-    <arg name="TP_inflation_m" value="0.6"/>
+    <arg name="TP_inflation_m" value="0.5"/>
 
     <arg name="PP_max_spacing_m" value="0.5"/>
 
