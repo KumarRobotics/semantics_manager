@@ -18,6 +18,7 @@ class VizComms:
         self.aerial_robot_name_ = rospy.get_param("~aerial_map_ns")
         self.rssi_thresh_ = rospy.get_param("~rssi_thresh", 30)
         self.robot_list_.append(self.aerial_robot_name_)
+        self.robot_list_.append("basestation")
 
         world_config_path = rospy.get_param("~world_config_path",
                 Path(rospkg.RosPack().get_path('semantics_manager')) / "config/config.yaml")
@@ -77,6 +78,10 @@ class VizComms:
         self.robot_positions_[robot] = np.array([pose_only_msg.position.x,
                                                  pose_only_msg.position.y,
                                                  pose_only_msg.position.z])
+
+        # Set the basestation location to the first ground robot location
+        if np.linalg.norm(self.robot_positions_["basestation"]) == 0:
+            self.robot_positions_["basestation"] = self.robot_positions_[robot]
 
     def rssi_cb(self, rssi_msg, robot1, robot2):
         self.rssis_[robot1][robot2]['rssi'] = rssi_msg.data

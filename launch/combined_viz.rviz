@@ -209,10 +209,10 @@ Visualization Manager:
       Value: true
     - Class: rviz/Marker
       Enabled: true
-      Marker Topic: /callisto/goal_manager/goal_viz
+      Marker Topic: /viz_goals/goal_viz
       Name: Marker
       Namespaces:
-        robot_goals: true
+        {}
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray

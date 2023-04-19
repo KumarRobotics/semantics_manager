@@ -14,5 +14,10 @@
     <param name="~aerial_map_ns" value="$(arg aerial_map_ns)"/>
   </node>
 
+  <node pkg="semantics_manager" type="viz_goals.py" name="viz_goals" output="$(arg output)">
+    <param name="~robot_list" value="$(arg robot_list)"/>
+    <param name="~min_goal_dist_m" value="15"/>
+  </node>
+
   <node type="rviz" name="rviz" pkg="rviz" args="-d $(find semantics_manager)/launch/combined_viz.rviz"/>
 </launch>
