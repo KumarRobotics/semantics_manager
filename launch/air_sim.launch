@@ -4,7 +4,7 @@
   <arg name="ns" default="quadrotor"/>
   <arg name="output" default="screen"/>
 
-  <arg name="robot_list" default="husky1,husky2,husky3"/>
+  <arg name="robot_list" default="husky1,husky2,husky3,husky4,husky5,husky6,husky7,husky8,husky9,husky10"/>
   <arg name="global" default="True"/>
   <arg name="sim" default="True"/>
   <arg name="air_router" default="True"/>

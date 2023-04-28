@@ -5,7 +5,9 @@
 
   <arg name="output" default="screen"/>
 
-  <node pkg="grid_map_comp" type="decompressor_node" name="map_decompressor" output="$(arg output)">
+  <param name="use_sim_time" value="True"/>
+
+  <node pkg="grid_map_comp" type="decompressor_node" name="map_decompressor" output="log">
     <param name="~map_topic_name" value="/$(arg aerial_map_ns)/asoom/map"/>
   </node>
 
@@ -17,6 +19,10 @@
   <node pkg="semantics_manager" type="viz_goals.py" name="viz_goals" output="$(arg output)">
     <param name="~robot_list" value="$(arg robot_list)"/>
     <param name="~min_goal_dist_m" value="15"/>
+  </node>
+
+  <node pkg="semantics_manager" type="analyze_takeovers.py" name="analyse_takeovers" output="$(arg output)">
+    <param name="~robot_list" value="$(arg robot_list)"/>
   </node>
 
   <node type="rviz" name="rviz" pkg="rviz" args="-d $(find semantics_manager)/launch/combined_viz.rviz"/>
