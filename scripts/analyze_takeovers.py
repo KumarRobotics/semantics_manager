@@ -28,6 +28,11 @@ class AnalyzeTakeovers:
             return
         self.robot_is_auto_[robot] = is_auto_msg
 
+        if is_auto_msg.data and self.start_times_[robot] == 0:
+            # first auto 
+            self.start_times_[robot] = rospy.Time.now()
+            rospy.loginfo(f"Robot {robot} started mission")
+
         if not is_auto_msg.data:
             # manual
             self.takeover_times_[robot].append([rospy.Time.now(), None])
@@ -36,10 +41,6 @@ class AnalyzeTakeovers:
             duration = rospy.Time.now() - self.takeover_times_[robot][-1][0]
             self.takeover_times_[robot][-1][1] = duration
             rospy.loginfo(f"Robot {robot} manual takeover for {duration.to_sec()} sec")
-        else:
-            # first auto 
-            self.start_times_[robot] = rospy.Time.now()
-            rospy.loginfo(f"Robot {robot} started mission")
 
     def finish(self):
         stop_t = rospy.Time.now()
