@@ -11,10 +11,25 @@
   <arg name="this_robot" default="husky1"/>
   <arg name="aerial_map_ns" default="quadrotor"/>
 
+  <arg name="use_env_init" default="True"/>
+  <!-- If not use env init, can manually set these -->
+  <arg name="svg_origin_x" default="0"/>
+  <arg name="svg_origin_y" default="0"/>
+  <arg name="init_pos_px_x" default="-1"/>
+  <arg name="init_pos_px_y" default="-1"/>
+  <arg name="init_pos_px_cov" default="10"/>
+  <arg name="init_pos_m_x" default="0"/>
+  <arg name="init_pos_m_y" default="0"/>
+  <arg name="init_pos_deg_theta" default="0"/>
+  <arg name="init_pos_deg_cov" default="5"/>
+
   <group ns="$(arg this_robot)">
     <include file="$(find top_down_render)/launch/top_down_render.launch" pass_all_args="True">
       <arg name="world_config_path" value="$(arg world_config_path)"/>
-      <arg name="init_param_path" value="$(find semantics_manager)/maps/dynamic_unity_urban/init_conditions.yaml"/>
+      <arg name="init_param_path" value="$(find semantics_manager)/maps/dynamic_unity_urban/init_conditions.yaml" if="$(eval use_env_init)"/>
+      <!-- If init_param_path is none, the passed through args will automatically get used -->
+      <arg name="init_param_path" value="none" if="$(eval not use_env_init)"/>
+
       <arg name="output" value="log"/>
     </include>
 
