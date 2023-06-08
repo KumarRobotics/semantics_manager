@@ -71,6 +71,7 @@
 
     <group if="$(arg goal_manager)">
       <include file="$(find spomp)/launch/goal_manager.launch" pass_all_args="True">
+        <arg name="goal_manager_min_goal_dist_m" value="15"/>
       </include>
     </group>
   </group>
