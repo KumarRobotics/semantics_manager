@@ -16,6 +16,7 @@ class GoalAnalyzer:
         self.min_goal_dist_m_ = 15
         self.robot_list_ = {}
         self.topic_list_ = []
+        self.topic_list_.append(f"/quadrotor/asoom/map")
         for i in range(10):
             robot_name = f"husky{i+1}"
             self.robot_list_[robot_name] = i
@@ -24,6 +25,7 @@ class GoalAnalyzer:
 
         # vars
         self.goal_list_ = np.zeros((0, 2))
+        self.start_t_ = None
         
         # outputs
         self.goal_discovery_t_ = np.zeros((len(self.robot_list_), 0))
@@ -38,7 +40,10 @@ class GoalAnalyzer:
 
     def analyze(self):
         for topic, msg, t in tqdm(self.bag_.read_messages(topics = self.topic_list_)):
-            if "goal_manager/goal_viz" in topic:
+            if topic == "/quadrotor/asoom/map":
+                if self.start_t_ is None:
+                    self.start_t_ = msg.info.header.stamp.to_sec()
+            elif "goal_manager/goal_viz" in topic:
                 robot_name = topic.split('/')[1]
                 self.goal_cb(msg, self.robot_list_[robot_name])
             elif "goal_manager/claimed_goals" in topic:
@@ -89,7 +94,7 @@ class GoalAnalyzer:
         goals_unclaimed = set(goals_already_claimed[0]).difference(goals_cur_claimed_tmp)
         for g_id in goals_unclaimed:
             if self.goal_unclaimed_t_[robot_id][g_id] == 0:
-                self.goal_unclaimed_t_[robot_id][g_id] = goal_msg.header.stamp.to_sec()
+                self.goal_unclaimed_t_[robot_id][g_id] = goal_msg.header.stamp.to_sec() - self.start_t_
 
     def add_goal(self, goal_loc, goal_status, t, robot_id):
             self.goal_discovery_t_ = np.hstack((self.goal_discovery_t_, np.zeros((len(self.robot_list_), 1))))
@@ -103,13 +108,13 @@ class GoalAnalyzer:
 
     def update_goal_stamps(self, goal_status, goal_id, robot_id, time_sec):
         if self.goal_discovery_t_[robot_id][goal_id] == 0:
-            self.goal_discovery_t_[robot_id][goal_id] = time_sec
+            self.goal_discovery_t_[robot_id][goal_id] = time_sec - self.start_t_
             print(f"Robot {robot_id} discovered goal {goal_id}")
         if goal_status == ClaimedGoal.IN_PROGRESS and self.goal_claimed_t_[robot_id][goal_id] == 0:
-            self.goal_claimed_t_[robot_id][goal_id] = time_sec
+            self.goal_claimed_t_[robot_id][goal_id] = time_sec - self.start_t_
             print(f"Robot {robot_id} claimed goal {goal_id}")
         if goal_status == ClaimedGoal.VISITED and self.goal_visited_t_[robot_id][goal_id] == 0:
-            self.goal_visited_t_[robot_id][goal_id] = time_sec
+            self.goal_visited_t_[robot_id][goal_id] = time_sec - self.start_t_
             print(f"Robot {robot_id} visited goal {goal_id}")
 
 if __name__ == '__main__':
