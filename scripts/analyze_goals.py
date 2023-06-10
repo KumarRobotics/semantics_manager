@@ -119,7 +119,7 @@ class GoalAnalyzer:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate statistics for reaching goals")
-    parser.add_argument("bag_path", help="Bath to bag to process")
+    parser.add_argument("bag_path", help="Path to bag to process")
     args = parser.parse_args()
 
     ga = GoalAnalyzer(args.bag_path)

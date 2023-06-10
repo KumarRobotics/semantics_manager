@@ -2,6 +2,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+import argparse
 
 # dist over time to reach goal from beginning
 def plot_goal_reached_times(path):
@@ -65,10 +66,13 @@ def plot_robot_reached(path):
     ax.bar(range(10), robot_goal_num)
 
 if __name__ == '__main__':
-    datapath = '/media/ian/ResearchSSD/Jackal/spomp_sim/test_lawnmower_10robots_0_2023-06-08-16-17-50_goaltimes.npy'
-    plot_goal_reached_times(datapath)
-    plot_nav_times(datapath)
-    plot_active_times(datapath)
-    plot_robot_reached(datapath)
+    parser = argparse.ArgumentParser(description="Generate statistics for reaching goals")
+    parser.add_argument("data", help="Path to data to process")
+    args = parser.parse_args()
+
+    plot_goal_reached_times(args.data)
+    plot_nav_times(args.data)
+    plot_active_times(args.data)
+    plot_robot_reached(args.data)
 
     plt.show()
