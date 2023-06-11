@@ -6,7 +6,7 @@ import argparse
 
 # dist over time to reach goal from beginning
 def plot_goal_reached_times(path):
-    d = np.load(path)
+    d = np.load(path)["times"]
     # easier to deal with nans than 0
     d[d == 0] = np.nan
     goal_t = np.nanmin(d[3,:,:], axis=0)
@@ -19,7 +19,8 @@ def plot_goal_reached_times(path):
 
 # dist over time to reach goal from when claimed
 def plot_nav_times(path):
-    d = np.load(path)
+    d = np.load(path)["times"]
+    d_supp = np.load(path)["supp"]
     d[d == 0] = np.nan
     
     goal_t = np.nanmin(d[3,:,:], axis=0)
@@ -28,19 +29,23 @@ def plot_nav_times(path):
     robot_reached = np.nanargmin(d[3,:,:], axis=0)
 
     goal_t = d[3,robot_reached,np.arange(d.shape[2])]
+
+    for robot_id in d_supp:
+        for goal_id in d_supp[robot_id]:
+            if d_supp[robot_id][goal_id][-1][0] == "claimed":
+                print("used supp")
+                d[1,robot_id,goal_id] =d_supp[robot_id][goal_id][-1][1] 
+
     claimed_t = d[1,robot_reached,np.arange(d.shape[2])]
-
     diff_t = goal_t - claimed_t
-
-    if not np.all(np.isnan(d[2,robot_reached,np.arange(d.shape[2])])):
-        print("WARNING: at least one goal was claimed, released, and claimed again.  Results may not be accurate")
 
     fig, ax = plt.subplots()
     ax.violinplot(dataset=[diff_t])
 
 # analyze the time robots spend with an active goal vs not
 def plot_active_times(path):
-    d = np.load(path)
+    d = np.load(path)["times"]
+    d_supp = np.load(path)["supp"]
     d[d == 0] = np.nan
     end_t = np.nanmax(d)
 
@@ -49,6 +54,20 @@ def plot_active_times(path):
         robot_d = d[:, robot_id, :]
         unvisited_t = robot_d[2, :] - robot_d[1, :]
         visited_t = robot_d[3, :] - robot_d[1, :]
+        if robot_id in d_supp:
+            r_supp = d_supp[robot_id]
+            for goal_id in r_supp:
+                visted_t[goal_id] = 0
+                last_claimed_t = None
+                for switch in r_supp[goal_id]:
+                    if switch[0] == "claimed":
+                        last_claimed_t = switch[1]
+                    else:
+                        visted_t[goal_id] += switch[1] - last_claimed_t
+
+                if robot_d[3, goal_id] > 0:
+                    visited_t[goal_id] += robot_d[3, goal_id] - last_claimed_t
+
         robot_t[robot_id] = np.nansum(unvisited_t) + np.nansum(visited_t)
 
     fig, ax = plt.subplots()
@@ -56,7 +75,7 @@ def plot_active_times(path):
 
 # analyze which robots visited goals
 def plot_robot_reached(path):
-    d = np.load(path)
+    d = np.load(path)["times"]
 
     robot_goal_num = np.zeros((d.shape[1],))
     for robot_id in range(d.shape[1]):

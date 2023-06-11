@@ -53,10 +53,10 @@ class GoalAnalyzer:
                 self.claimed_goal_cb(msg, self.robot_list_[robot_name])
 
         filename = self.bag_path_.with_name(self.bag_path_.stem + "_goaltimes")
-        np.savez(filename, np.stack([self.goal_discovery_t_,
-                                     self.goal_claimed_t_,
-                                     self.goal_unclaimed_t_,
-                                     self.goal_visited_t_]), self.goal_claimed_sup_)
+        np.savez(filename, times=np.stack([self.goal_discovery_t_,
+                                           self.goal_claimed_t_,
+                                           self.goal_unclaimed_t_,
+                                           self.goal_visited_t_]), supp=self.goal_claimed_sup_)
 
     def goal_cb(self, goal_msg, robot_id):
         for goal in goal_msg.points:
