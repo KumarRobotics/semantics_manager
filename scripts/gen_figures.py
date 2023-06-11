@@ -20,7 +20,7 @@ def plot_goal_reached_times(path):
 # dist over time to reach goal from when claimed
 def plot_nav_times(path):
     d = np.load(path)["times"]
-    d_supp = np.load(path)["supp"]
+    d_supp = np.load(path, allow_pickle=True)["supp"][()]
     d[d == 0] = np.nan
     
     goal_t = np.nanmin(d[3,:,:], axis=0)
@@ -30,11 +30,12 @@ def plot_nav_times(path):
 
     goal_t = d[3,robot_reached,np.arange(d.shape[2])]
 
-    for robot_id in d_supp:
+    for robot_id in d_supp: 
         for goal_id in d_supp[robot_id]:
             if d_supp[robot_id][goal_id][-1][0] == "claimed":
-                print("used supp")
-                d[1,robot_id,goal_id] =d_supp[robot_id][goal_id][-1][1] 
+                d[1,robot_id,goal_id] = d_supp[robot_id][goal_id][-1][1] 
+            elif not np.isnan(d[3,robot_id,goal_id]):
+                print("Something weird is going on here, investigate further")
 
     claimed_t = d[1,robot_reached,np.arange(d.shape[2])]
     diff_t = goal_t - claimed_t
@@ -45,7 +46,7 @@ def plot_nav_times(path):
 # analyze the time robots spend with an active goal vs not
 def plot_active_times(path):
     d = np.load(path)["times"]
-    d_supp = np.load(path)["supp"]
+    d_supp = np.load(path, allow_pickle=True)["supp"][()]
     d[d == 0] = np.nan
     end_t = np.nanmax(d)
 
@@ -57,7 +58,7 @@ def plot_active_times(path):
         if robot_id in d_supp:
             r_supp = d_supp[robot_id]
             for goal_id in r_supp:
-                visted_t[goal_id] = 0
+                visited_t[goal_id] = 0
                 last_claimed_t = None
                 for switch in r_supp[goal_id]:
                     if switch[0] == "claimed":
