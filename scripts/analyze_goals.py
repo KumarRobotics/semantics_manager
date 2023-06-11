@@ -33,6 +33,8 @@ class GoalAnalyzer:
         self.goal_unclaimed_t_ = np.zeros((len(self.robot_list_), 0))
         self.goal_visited_t_ = np.zeros((len(self.robot_list_), 0))
 
+        self.goal_claimed_sup_ = {}
+
         self.bag_path_ = Path(bag_path)
         print("Loading bag...")
         self.bag_ = rosbag.Bag(bag_path, 'r') 
@@ -50,11 +52,11 @@ class GoalAnalyzer:
                 robot_name = topic.split('/')[1]
                 self.claimed_goal_cb(msg, self.robot_list_[robot_name])
 
-        filename = self.bag_path_.with_name(self.bag_path_.stem + "_goaltimes.npy")
-        np.save(filename, np.stack([self.goal_discovery_t_,
-                                    self.goal_claimed_t_,
-                                    self.goal_unclaimed_t_,
-                                    self.goal_visited_t_]))
+        filename = self.bag_path_.with_name(self.bag_path_.stem + "_goaltimes")
+        np.savez(filename, np.stack([self.goal_discovery_t_,
+                                     self.goal_claimed_t_,
+                                     self.goal_unclaimed_t_,
+                                     self.goal_visited_t_]), self.goal_claimed_sup_)
 
     def goal_cb(self, goal_msg, robot_id):
         for goal in goal_msg.points:
@@ -95,6 +97,20 @@ class GoalAnalyzer:
         for g_id in goals_unclaimed:
             if self.goal_unclaimed_t_[robot_id][g_id] == 0:
                 self.goal_unclaimed_t_[robot_id][g_id] = goal_msg.header.stamp.to_sec() - self.start_t_
+                print(f"Robot {robot_id} unclaimed goal {g_id}")
+            elif robot_id in self.goal_claimed_sup_ and \
+                 g_id in self.goal_claimed_sup_[robot_id] and \
+                 self.goal_claimed_sup_[robot_id][g_id][-1][0] == "claimed":
+                self.goal_claimed_sup_[robot_id][g_id] = [("unclaimed", goal_msg.header.stamp.to_sec())]
+
+        for g_id, g_t in enumerate(self.goal_unclaimed_t_[robot_id]):
+            if g_t > 0 and g_id in goals_cur_claimed_tmp:
+                if robot_id not in self.goal_claimed_sup_:
+                    self.goal_claimed_sup_[robot_id] = {}
+                if g_id not in self.goal_claimed_sup_[robot_id]:
+                    self.goal_claimed_sup_[robot_id][g_id] = [("claimed", goal_msg.header.stamp.to_sec())]
+                elif self.goal_claimed_sup_[robot_id][g_id][-1][0] == "unclaimed":
+                    self.goal_claimed_sup_[robot_id][g_id].append(("claimed", goal_msg.header.stamp.to_sec()))
 
     def add_goal(self, goal_loc, goal_status, t, robot_id):
             self.goal_discovery_t_ = np.hstack((self.goal_discovery_t_, np.zeros((len(self.robot_list_), 1))))
