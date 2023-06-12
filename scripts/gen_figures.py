@@ -80,7 +80,7 @@ def plot_active_times(paths):
 
         total_t += end_t
         if all_robot_t is None:
-            all_robot_t = robot_t
+            all_robot_t = robot_t[None, :]
         else:
             all_robot_t = np.vstack((all_robot_t, robot_t))
 
@@ -98,7 +98,7 @@ def plot_robot_reached(paths):
             robot_goal_num[robot_id] = np.count_nonzero(d[3:, robot_id, :])
 
         if all_robot_goal_num is None:
-            all_robot_goal_num = robot_goal_num
+            all_robot_goal_num = robot_goal_num[None, :]
         else:
             all_robot_goal_num = np.vstack((all_robot_goal_num, robot_goal_num))
 
