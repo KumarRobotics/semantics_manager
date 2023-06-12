@@ -64,7 +64,7 @@ def plot_active_times(path):
                     if switch[0] == "claimed":
                         last_claimed_t = switch[1]
                     else:
-                        visted_t[goal_id] += switch[1] - last_claimed_t
+                        visited_t[goal_id] += switch[1] - last_claimed_t
 
                 if robot_d[3, goal_id] > 0:
                     visited_t[goal_id] += robot_d[3, goal_id] - last_claimed_t

@@ -101,7 +101,7 @@ class GoalAnalyzer:
             elif robot_id in self.goal_claimed_sup_ and \
                  g_id in self.goal_claimed_sup_[robot_id] and \
                  self.goal_claimed_sup_[robot_id][g_id][-1][0] == "claimed":
-                self.goal_claimed_sup_[robot_id][g_id] = [("unclaimed", goal_msg.header.stamp.to_sec())]
+                self.goal_claimed_sup_[robot_id][g_id].append(("unclaimed", goal_msg.header.stamp.to_sec()))
 
         for g_id, g_t in enumerate(self.goal_unclaimed_t_[robot_id]):
             if g_t > 0 and g_id in goals_cur_claimed_tmp:
