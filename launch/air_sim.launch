@@ -18,6 +18,7 @@
     <include file="$(find asoom)/launch/asoom.launch" pass_all_args="True">
       <arg name="output" value="log"/>
 
+      <arg name="ros_pub_period_ms" value="10000"/>
       <arg name="pose_topic" value="/unity_ros/quadrotor/TrueState/pose"/>
       <arg name="img_topic" value="RGBCamera_Down/image_raw"/>
       <arg name="sem_topic" value="SemanticCamera/image_raw"/>

@@ -11,13 +11,13 @@ from spomp.msg import ClaimedGoal
 
 # This is heavily based on viz_goals, but with a different objective in mind
 class GoalAnalyzer:
-    def __init__(self, bag_path):
+    def __init__(self, bag_path, n_robots):
         # params
         self.min_goal_dist_m_ = 15
         self.robot_list_ = {}
         self.topic_list_ = []
         self.topic_list_.append(f"/quadrotor/asoom/map")
-        for i in range(10):
+        for i in range(n_robots):
             robot_name = f"husky{i+1}"
             self.robot_list_[robot_name] = i
             self.topic_list_.append(f"/{robot_name}/goal_manager/goal_viz")
@@ -41,11 +41,14 @@ class GoalAnalyzer:
         print("Bag loaded")
 
     def analyze(self):
+        end_t = 0
         for topic, msg, t in tqdm(self.bag_.read_messages(topics = self.topic_list_)):
             if topic == "/quadrotor/asoom/map":
                 if self.start_t_ is None:
                     self.start_t_ = msg.info.header.stamp.to_sec()
             elif "goal_manager/goal_viz" in topic:
+                end_t = max(msg.header.stamp.to_sec(), end_t)
+
                 robot_name = topic.split('/')[1]
                 self.goal_cb(msg, self.robot_list_[robot_name])
             elif "goal_manager/claimed_goals" in topic:
@@ -56,7 +59,7 @@ class GoalAnalyzer:
         np.savez(filename, times=np.stack([self.goal_discovery_t_,
                                            self.goal_claimed_t_,
                                            self.goal_unclaimed_t_,
-                                           self.goal_visited_t_]), supp=self.goal_claimed_sup_)
+                                           self.goal_visited_t_]), supp=self.goal_claimed_sup_, end_t=end_t-self.start_t_)
 
     def goal_cb(self, goal_msg, robot_id):
         for goal in goal_msg.points:
@@ -105,6 +108,7 @@ class GoalAnalyzer:
 
         for g_id, g_t in enumerate(self.goal_unclaimed_t_[robot_id]):
             if g_t > 0 and g_id in goals_cur_claimed_tmp:
+                # goal has been claimed again
                 if robot_id not in self.goal_claimed_sup_:
                     self.goal_claimed_sup_[robot_id] = {}
                 if g_id not in self.goal_claimed_sup_[robot_id]:
@@ -135,8 +139,10 @@ class GoalAnalyzer:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate statistics for reaching goals")
-    parser.add_argument("bag_path", help="Path to bag to process")
+    parser.add_argument("bag_paths", help="Path to bag to process", nargs='+')
+    parser.add_argument("-n", "--n_robots", help="Number of robots", type=int)
     args = parser.parse_args()
 
-    ga = GoalAnalyzer(args.bag_path)
-    ga.analyze()
+    for path in args.bag_paths:
+        ga = GoalAnalyzer(path, args.n_robots)
+        ga.analyze()
