@@ -22,7 +22,7 @@ def plot_goal_reached_times(comp_paths):
         goal_comp.append(all_goal_t)
 
     fig, ax = plt.subplots()
-    ax.violinplot(dataset=goal_comp)
+    ax.violinplot(dataset=goal_comp, showmeans=True)
 
 # dist over time to reach goal from when claimed
 def plot_nav_times(comp_paths):
@@ -37,28 +37,33 @@ def plot_nav_times(comp_paths):
             goal_t = np.nanmin(d[3,:,:], axis=0)
             # filter to only worry about goals that were reached
             d = d[:,:,~np.isnan(goal_t)] 
+            map_to_goals = np.arange(goal_t.shape[0])[~np.isnan(goal_t)]
             robot_reached = np.nanargmin(d[3,:,:], axis=0)
 
             goal_t = d[3,robot_reached, np.arange(d.shape[2])]
 
             for robot_id in d_supp: 
                 for goal_id in d_supp[robot_id]:
+                    if goal_id not in map_to_goals:
+                        # goal never reached, so we can ignore
+                        continue
+                    goal_map_id = np.where(map_to_goals == goal_id)[0][0]
                     if d_supp[robot_id][goal_id][-1][0] == "claimed":
-                        d[1,robot_id,goal_id] = d_supp[robot_id][goal_id][-1][1] 
-                    elif not np.isnan(d[3,robot_id,goal_id]):
-                        print("Something weird is going on here, investigate further")
+                        d[1,robot_id,goal_map_id] = d_supp[robot_id][goal_id][-1][1] 
+                    elif not np.isnan(d[3,robot_id,goal_map_id]):
+                        print(f"Something weird is going on here, investigate further. path: {path}, robot: {robot_id}, goal: {goal_map_id}")
 
             claimed_t = d[1,robot_reached,np.arange(d.shape[2])]
             all_diff_t = np.append(all_diff_t, goal_t - claimed_t)
         diff_comp.append(all_diff_t)
 
     fig, ax = plt.subplots()
-    ax.violinplot(dataset=diff_comp)
+    ax.violinplot(dataset=diff_comp, showmeans=True)
 
 # analyze the time robots spend with an active goal vs not
 def plot_active_times(comp_paths):
     comps = []
-    for paths in comp_paths:
+    for dset_ind, paths in enumerate(comp_paths):
         all_robot_unvis_t = None
         all_robot_vis_t = None
         total_t = 0
@@ -66,8 +71,15 @@ def plot_active_times(comp_paths):
             d = np.load(path)["times"]
             d_supp = np.load(path, allow_pickle=True)["supp"][()]
             d[d == 0] = np.nan
+
+            goal_t = np.nanmin(d[3,:,:], axis=0)
             end_t = np.load(path)["end_t"][()]
 
+            if np.all(~np.isnan(goal_t)):
+                # all goals visited, so end time is visit time of last goal
+                end_t = np.max(goal_t)
+
+            total_t += end_t
             robot_unvisited_t = np.zeros((d.shape[1],))
             robot_visited_t = np.zeros((d.shape[1],))
             for robot_id in range(d.shape[1]):
@@ -94,7 +106,6 @@ def plot_active_times(comp_paths):
                 robot_unvisited_t[robot_id] = np.nansum(unvisited_t)
                 robot_visited_t[robot_id] = np.nansum(visited_t)
 
-            total_t += end_t
             if all_robot_vis_t is None:
                 all_robot_unvis_t = robot_unvisited_t[None, :]
                 all_robot_vis_t = robot_visited_t[None, :]
@@ -108,16 +119,17 @@ def plot_active_times(comp_paths):
         comps.append(all_robot_unvis_t + all_robot_vis_t)
 
         fig, ax = plt.subplots()
-        unvis_bar = ax.bar(range(all_robot_vis_t.shape[0]), all_robot_unvis_t)
-        vis_bar = ax.bar(range(all_robot_vis_t.shape[0]), all_robot_vis_t, bottom = all_robot_unvis_t)
+        vis_bar = ax.bar(range(all_robot_vis_t.shape[0]), all_robot_vis_t)
+        unvis_bar = ax.bar(range(all_robot_vis_t.shape[0]), all_robot_unvis_t, bottom = all_robot_vis_t)
         plt.legend((unvis_bar[0], vis_bar[0]), ("Unvis", "Vis"))
+        plt.title(f"Dataset {dset_ind}")
 
     fig, ax = plt.subplots()
-    ax.violinplot(dataset=comps, positions=[i for i in range(len(comps)//2) for _ in range(2)])
+    ax.violinplot(dataset=comps, positions=[i for i in range(len(comps)//2) for _ in range(2)], showmeans=True)
 
 # analyze which robots visited goals
 def plot_robot_reached(comp_paths):
-    for paths in comp_paths:
+    for dset_ind, paths in enumerate(comp_paths):
         all_robot_goal_num = None
         for path in paths:
             d = np.load(path)["times"]
@@ -133,6 +145,7 @@ def plot_robot_reached(comp_paths):
 
         fig, ax = plt.subplots()
         ax.bar(range(all_robot_goal_num.shape[1]), np.sum(all_robot_goal_num, axis=0))
+        plt.title(f"Dataset {dset_ind}")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate statistics for reaching goals")
