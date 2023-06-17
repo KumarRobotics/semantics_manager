@@ -113,10 +113,11 @@ def plot_active_times(comp_paths):
                 all_robot_unvis_t = np.vstack((all_robot_unvis_t, robot_unvisited_t))
                 all_robot_vis_t = np.vstack((all_robot_vis_t, robot_visited_t))
 
+        comps.append(all_robot_vis_t.flatten())
+        comps.append((all_robot_unvis_t + all_robot_vis_t).flatten())
+
         all_robot_vis_t = np.sum(all_robot_vis_t, axis=0)/total_t
         all_robot_unvis_t = np.sum(all_robot_unvis_t, axis=0)/total_t
-        comps.append(all_robot_vis_t)
-        comps.append(all_robot_unvis_t + all_robot_vis_t)
 
         fig, ax = plt.subplots()
         vis_bar = ax.bar(range(all_robot_vis_t.shape[0]), all_robot_vis_t)
