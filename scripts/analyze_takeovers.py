@@ -10,7 +10,8 @@ class AnalyzeTakeovers:
         self.robot_list_ = rospy.get_param("~robot_list").split(',')
 
         self.robot_is_auto_ = {r:False for r in self.robot_list_}
-        self.start_times_ = {r:0 for r in self.robot_list_}
+        self.start_times_ = {r:rospy.Time(0) for r in self.robot_list_}
+        self.end_times_ = {r:rospy.Time(0) for r in self.robot_list_}
         self.takeover_times_ = {r:[] for r in self.robot_list_}
         self.takeover_subs_ = []
         for robot in self.robot_list_:
@@ -28,22 +29,26 @@ class AnalyzeTakeovers:
             return
         self.robot_is_auto_[robot] = is_auto_msg
 
-        if is_auto_msg.data and self.start_times_[robot] == 0:
+        if is_auto_msg.data and self.start_times_[robot] == rospy.Time(0):
             # first auto 
             self.start_times_[robot] = rospy.Time.now()
             rospy.loginfo(f"Robot {robot} started mission")
 
-        if not is_auto_msg.data:
-            # manual
-            self.takeover_times_[robot].append([rospy.Time.now(), None])
-        elif len(self.takeover_times_[robot]) > 0:
-            # auto
-            duration = rospy.Time.now() - self.takeover_times_[robot][-1][0]
-            self.takeover_times_[robot][-1][1] = duration
-            rospy.loginfo(f"Robot {robot} manual takeover for {duration.to_sec()} sec")
+        if self.start_times_[robot] > rospy.Time(0):
+            # mission has started
+            if not is_auto_msg.data:
+                # manual
+                t = rospy.Time.now()
+                self.end_times_[robot] = t
+                self.takeover_times_[robot].append([t, None])
+                rospy.logwarn(f"Robot {robot} started takeover at {t.to_sec() - self.dataset_start_t_} sec")
+            elif len(self.takeover_times_[robot]) > 0:
+                # auto
+                duration = rospy.Time.now() - self.takeover_times_[robot][-1][0]
+                self.takeover_times_[robot][-1][1] = duration
+                rospy.loginfo(f"Robot {robot} manual takeover for {duration.to_sec()} sec")
 
     def finish(self):
-        stop_t = rospy.Time.now()
         for robot in self.robot_list_:
             rospy.loginfo(f"Robot {robot} summary:")
             if self.start_times_[robot] == 0:
@@ -51,13 +56,15 @@ class AnalyzeTakeovers:
                 continue
 
             start_t = self.start_times_[robot]
+            end_t = self.end_times_[robot]
+            total_t = (end_t - start_t).to_sec()
+            rospy.loginfo(f"Mission duration: {total_t} sec")
             total_takeover_t = 0
             for takeover in self.takeover_times_[robot]:
                 if takeover[1] is None:
                     continue
                 rospy.loginfo(f"Takeover at {takeover[0].to_sec()-self.dataset_start_t_} of duration {takeover[1].to_sec()} sec")
                 total_takeover_t += takeover[1].to_sec()
-            total_t = (stop_t - start_t).to_sec()
             rospy.loginfo(f"Manual {100*total_takeover_t/total_t}% of the time")
 
 if __name__ == '__main__':
