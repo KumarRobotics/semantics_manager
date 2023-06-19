@@ -59,6 +59,11 @@ class GoalAnalyzer:
                     self.start_t_ = msg.info.header.stamp.to_sec()
                     print(f"START TIME: {self.start_t_}")
             elif "goal_manager/goal_viz" in topic:
+                # only use stamp, so compressed is fine
+                if self.start_t_ is None and msg.header.stamp.to_sec() > 0:
+                    self.start_t_ = msg.header.stamp.to_sec()
+                    print(f"START TIME: {self.start_t_}")
+
                 end_t = max(msg.header.stamp.to_sec(), end_t)
 
                 robot_name = topic.split('/')[1]

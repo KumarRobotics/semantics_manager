@@ -32,7 +32,7 @@ class AnalyzeTakeovers:
         if is_auto_msg.data and self.start_times_[robot] == rospy.Time(0):
             # first auto 
             self.start_times_[robot] = rospy.Time.now()
-            rospy.loginfo(f"Robot {robot} started mission")
+            rospy.loginfo(f"Robot {robot} started mission at {self.start_times_[robot].to_sec() - self.dataset_start_t_}")
 
         if self.start_times_[robot] > rospy.Time(0):
             # mission has started
