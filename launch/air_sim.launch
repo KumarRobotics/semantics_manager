@@ -8,36 +8,51 @@
   <arg name="global" default="True"/>
   <arg name="sim" default="True"/>
   <arg name="air_router" default="True"/>
+  <arg name="goal_alt_m" default="60.0"/>
+  <arg name="const_alt" default="False"/>
+
+  <arg name="launch_mapping" default="True"/>
+
+  <arg name="initial_expl_time" default="100"/>
+  <arg name="short_expl_time" default="40"/>
+  <arg name="after_search_time" default="5"/>
+  <arg name="do_explore" default="True"/>
 
   <include file="$(find fake_quad_waypt)/launch/fake_quad_waypt.launch">
     <arg name="robot" value="$(arg ns)"/>
     <arg name="path_file" value="None"/>
+    <arg name="goal_alt_m" value="$(arg goal_alt_m)"/>
+    <arg name="const_alt" value="$(arg const_alt)"/>
   </include>
 
   <group ns="$(arg ns)">
-    <include file="$(find asoom)/launch/asoom.launch" pass_all_args="True">
-      <arg name="output" value="log"/>
+    <group if="$(arg launch_mapping)">
+      <include file="$(find asoom)/launch/asoom.launch" pass_all_args="True">
+        <arg name="output" value="log"/>
 
-      <arg name="ros_pub_period_ms" value="10000"/>
-      <arg name="pose_topic" value="/unity_ros/quadrotor/TrueState/pose"/>
-      <arg name="img_topic" value="RGBCamera_Down/image_raw"/>
-      <arg name="sem_topic" value="SemanticCamera/image_raw"/>
+        <arg name="ros_pub_period_ms" value="10000"/>
+        <arg name="pose_topic" value="/unity_ros/$(arg ns)/TrueState/pose"/>
+        <arg name="img_topic" value="RGBCamera_Down/image_raw"/>
+        <arg name="sem_topic" value="SemanticCamera/image_raw"/>
 
-      <arg name="pose_graph_fix_scale" value="True"/>
+        <arg name="pose_graph_fix_scale" value="True"/>
 
-      <arg name="rectifier_scale" value="1"/>
-      <arg name="rectifier_calib_path" value="$(find asoom)/config/sim.yaml"/>
+        <arg name="rectifier_scale" value="1"/>
+        <arg name="rectifier_calib_path" value="$(find asoom)/config/sim.yaml"/>
 
-      <arg name="map_req_point_density" value="20"/>
-    </include>
+        <arg name="map_req_point_density" value="20"/>
+      </include>
+    </group>
 
     <group if="$(arg air_router)">
       <include file="$(find air_router)/launch/titan.launch" pass_all_args="True">
-        <arg name="initial_expl_time" value="100"/>
-        <arg name="short_expl_time" value="40"/>
-        <arg name="after_search_time" value="5" />
+        <arg name="ns" value="$(arg ns)"/>
+        <arg name="initial_expl_time" value="$(arg initial_expl_time)"/>
+        <arg name="short_expl_time" value="$(arg short_expl_time)"/>
+        <arg name="after_search_time" value="$(arg after_search_time)" />
         <arg name="tracking_time" value="30" />
         <arg name="recent_pose_time_threshold" value="30"/>
+        <arg name="do_explore" value="$(arg do_explore)"/>
       </include>
     </group>
   </group>
