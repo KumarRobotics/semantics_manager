@@ -77,6 +77,8 @@ def plot_goal_reached_times(comp_paths: List[List[str]],
     ax.set_xticks([])
     ax.tick_params(axis='y', labelsize=12)
 
+    ax.set_ylim([0, 35])
+
     if plot_title:
         for ind, (nr, nu) in enumerate(zip(diff_num_reached, diff_num_unreached)):
             ax.text(ind+1, np.max(goal_comp[ind]+0.3),
@@ -124,7 +126,6 @@ def plot_nav_times(comp_paths):
     ax.set_title("Distribution over times to visit goals", fontsize=15)
     ax.set_ylabel(
         "Duration of time to reach goal\n(minutes from goal being claimed)", fontsize=12)
-    ax.set_xticks([])
     ax.tick_params(axis='y', labelsize=12)
 
 # analyze the time robots spend with an active goal vs not
