@@ -13,16 +13,25 @@
 
   <arg name="launch_mapping" default="True"/>
 
-  <arg name="initial_expl_time" default="100"/>
-  <arg name="short_expl_time" default="40"/>
+
+  <!-- default="100"/> -->
+  <arg name="initial_expl_time" default="150"/> 
+  <!-- default=40 -->
+  <arg name="short_expl_time" default="60"/>
+
   <arg name="after_search_time" default="5"/>
   <arg name="do_explore" default="True"/>
+
+  <arg name="target_velocity" default="5"/>
+  <arg name="acceptance_radius" default="6"/>
+
 
   <include file="$(find fake_quad_waypt)/launch/fake_quad_waypt.launch">
     <arg name="robot" value="$(arg ns)"/>
     <arg name="path_file" value="None"/>
     <arg name="goal_alt_m" value="$(arg goal_alt_m)"/>
     <arg name="const_alt" value="$(arg const_alt)"/>
+    <arg name="target_velocity" value="$(arg target_velocity)"/>
   </include>
 
   <group ns="$(arg ns)">
@@ -53,6 +62,7 @@
         <arg name="tracking_time" value="30" />
         <arg name="recent_pose_time_threshold" value="30"/>
         <arg name="do_explore" value="$(arg do_explore)"/>
+        <arg name="acceptance_radius" value="$(arg acceptance_radius)"/>
       </include>
     </group>
   </group>
