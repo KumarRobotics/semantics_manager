@@ -1,0 +1,5 @@
+dynamic: True
+resolution: 2
+# west pt
+gps_origin_lat: 41.321854
+gps_origin_long: -74.017879
