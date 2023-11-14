@@ -18,7 +18,7 @@
 
   <include file="$(find spomp)/launch/local.launch" pass_all_args="True">
     <arg name="TP_target_dist_xy" value="0.5"/>
-    <arg name="TP_noise_m" value="0.05"/>
+    <arg name="TP_noise_m" value="0.03"/>
     <arg name="TP_slope_thresh" value="0.3"/>
     <arg name="TP_inflation_m" value="0.5"/>
 
@@ -33,7 +33,7 @@
     </node>
 
     <include file="$(find top_down_render)/launch/top_down_render.launch" pass_all_args="True">
-      <arg name="init_param_path" value="$(find semantics_manager)/maps/dynamic_new_bolton/init_conditions.yaml"/>
+      <arg name="init_param_path" value="$(find semantics_manager)/maps/dynamic_pennov/init_conditions_rear.yaml"/>
       <!--arg name="output" value="log"/-->
 
       <arg name="filter_pos_cov" value="0.007"/>
@@ -77,7 +77,7 @@
         <arg name="goal_manager_min_goal_dist_m" value="15"/>
 
         <arg name="find_obj_merge_dist_m" value="15"/>
-        <arg name="find_obj_min_size_m" value="8"/>
+        <arg name="find_obj_min_size_m" value="4"/>
       </include>
     </group>
   </group>
