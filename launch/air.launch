@@ -41,7 +41,7 @@
     </include>
   </group>
   <group if="$(arg db)">
-    <include file="$(find comm_stack_launch)/launch/titan.launch" pass_all_args="True">
+    <include file="$(find mocha_launch)/launch/titan.launch" pass_all_args="True">
       <arg name="robot_name" value="titan" />
     </include>
   </group>
